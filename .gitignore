@@ -55,6 +55,11 @@ local.properties
 *.ids
 *.orig
 
+#####################
+# Netbeans
+#####################
+nb-configuration.xml
+
 ######################
 # Maven
 ######################

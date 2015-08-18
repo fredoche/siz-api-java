@@ -12,12 +12,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+//import springfox.documentation.service.ApiInfo;
+//import springfox.documentation.spi.DocumentationType;
+//import springfox.documentation.spring.web.plugins.Docket;
+//import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static springfox.documentation.builders.PathSelectors.regex;
+//import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
  * Springfox Swagger configuration.
@@ -27,7 +27,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
  * have access to the Swagger view.
  */
 @Configuration
-@EnableSwagger2
+//@EnableSwagger2
 @Profile("!"+Constants.SPRING_PROFILE_PRODUCTION)
 public class SwaggerConfiguration implements EnvironmentAware {
 
@@ -45,41 +45,41 @@ public class SwaggerConfiguration implements EnvironmentAware {
     /**
      * Swagger Springfox configuration.
      */
-    @Bean
-    public Docket swaggerSpringfoxDocket() {
-        log.debug("Starting Swagger");
-        StopWatch watch = new StopWatch();
-        watch.start();
-        Docket docket = new Docket(DocumentationType.SWAGGER_2)
-            .apiInfo(apiInfo())
-            .genericModelSubstitutes(ResponseEntity.class)
-            .forCodeGeneration(true)
-            .genericModelSubstitutes(ResponseEntity.class)
-            .directModelSubstitute(org.joda.time.LocalDate.class, String.class)
-            .directModelSubstitute(org.joda.time.LocalDateTime.class, Date.class)
-            .directModelSubstitute(org.joda.time.DateTime.class, Date.class)
-            .directModelSubstitute(java.time.LocalDate.class, String.class)
-            .directModelSubstitute(java.time.ZonedDateTime.class, Date.class)
-            .directModelSubstitute(java.time.LocalDateTime.class, Date.class)
-            .select()
-            .paths(regex(DEFAULT_INCLUDE_PATTERN))
-            .build();
-        watch.stop();
-        log.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());
-        return docket;
-    }
-
-    /**
-     * API Info as it appears on the swagger-ui page.
-     */
-    private ApiInfo apiInfo() {
-        return new ApiInfo(
-            propertyResolver.getProperty("title"),
-            propertyResolver.getProperty("description"),
-            propertyResolver.getProperty("version"),
-            propertyResolver.getProperty("termsOfServiceUrl"),
-            propertyResolver.getProperty("contact"),
-            propertyResolver.getProperty("license"),
-            propertyResolver.getProperty("licenseUrl"));
-    }
+//    @Bean
+//    public Docket swaggerSpringfoxDocket() {
+//        log.debug("Starting Swagger");
+//        StopWatch watch = new StopWatch();
+//        watch.start();
+//        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+//            .apiInfo(apiInfo())
+//            .genericModelSubstitutes(ResponseEntity.class)
+//            .forCodeGeneration(true)
+//            .genericModelSubstitutes(ResponseEntity.class)
+//            .directModelSubstitute(org.joda.time.LocalDate.class, String.class)
+//            .directModelSubstitute(org.joda.time.LocalDateTime.class, Date.class)
+//            .directModelSubstitute(org.joda.time.DateTime.class, Date.class)
+//            .directModelSubstitute(java.time.LocalDate.class, String.class)
+//            .directModelSubstitute(java.time.ZonedDateTime.class, Date.class)
+//            .directModelSubstitute(java.time.LocalDateTime.class, Date.class)
+//            .select()
+//            .paths(regex(DEFAULT_INCLUDE_PATTERN))
+//            .build();
+//        watch.stop();
+//        log.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());
+//        return docket;
+//    }
+//
+//    /**
+//     * API Info as it appears on the swagger-ui page.
+//     */
+//    private ApiInfo apiInfo() {
+//        return new ApiInfo(
+//            propertyResolver.getProperty("title"),
+//            propertyResolver.getProperty("description"),
+//            propertyResolver.getProperty("version"),
+//            propertyResolver.getProperty("termsOfServiceUrl"),
+//            propertyResolver.getProperty("contact"),
+//            propertyResolver.getProperty("license"),
+//            propertyResolver.getProperty("licenseUrl"));
+//    }
 }
