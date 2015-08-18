@@ -20,7 +20,6 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.inject.Inject;
 
 @Configuration
-@Profile("!" + Constants.SPRING_PROFILE_CLOUD)
 @EnableMongoRepositories("io.siz.repository")
 @Import(value = MongoAutoConfiguration.class)
 @EnableMongoAuditing(auditorAwareRef = "springSecurityAuditorAware")
