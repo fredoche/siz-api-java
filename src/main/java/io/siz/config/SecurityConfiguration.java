@@ -5,26 +5,20 @@ import io.siz.security.xauth.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.data.repository.query.spi.EvaluationContextExtension;
-import org.springframework.data.repository.query.spi.EvaluationContextExtensionSupport;
-import org.springframework.security.access.expression.SecurityExpressionRoot;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
-
 import javax.inject.Inject;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Inject
-    private TokenProvider tokenProvider;
+    private XAuthTokenFilter xAuthTokenFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -48,69 +42,65 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(userDetailsService)
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-            .antMatchers("/scripts/**/*.{js,html}")
-            .antMatchers("/bower_components/**")
-            .antMatchers("/i18n/**")
-            .antMatchers("/assets/**")
-            .antMatchers("/swagger-ui.html")
-            .antMatchers("/test/**");
+                .antMatchers("/scripts/**/*.{js,html}")
+                .antMatchers("/bower_components/**")
+                .antMatchers("/i18n/**")
+                .antMatchers("/assets/**")
+                .antMatchers("/swagger-ui.html")
+                .antMatchers("/test/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .exceptionHandling()
-            .authenticationEntryPoint(authenticationEntryPoint)
-        .and()
-            .csrf()
-            .disable()
-            .headers()
-            .frameOptions()
-            .disable()
-        .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            .authorizeRequests()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/account/reset_password/init").permitAll()
-            .antMatchers("/api/account/reset_password/finish").permitAll()
-            .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/webjars/**").permitAll()
-            .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/configprops/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/v2/api-docs/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/configuration/security").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/configuration/ui").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/swagger-ui.html").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/protected/**").authenticated()
-        .and()
-            .apply(securityConfigurerAdapter());
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .csrf()
+                .disable()
+                .headers()
+                .frameOptions()
+                .disable()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/activate").permitAll()
+                .antMatchers("/api/authenticate").permitAll()
+                .antMatchers("/api/account/reset_password/init").permitAll()
+                .antMatchers("/api/account/reset_password/finish").permitAll()
+                .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/api/**").authenticated()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/configprops/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/v2/api-docs/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/configuration/security").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/configuration/ui").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/swagger-ui.html").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/protected/**").authenticated()
+                .and()
+                .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-    }
-
-    private XAuthTokenConfigurer securityConfigurerAdapter() {
-      return new XAuthTokenConfigurer(userDetailsService, tokenProvider);
     }
 
     @Bean

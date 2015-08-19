@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
 //import springfox.documentation.service.ApiInfo;
@@ -35,7 +36,7 @@ public class SwaggerConfiguration implements EnvironmentAware {
 
     public static final String DEFAULT_INCLUDE_PATTERN = "/api/.*";
 
-    private RelaxedPropertyResolver propertyResolver;
+    private PropertyResolver propertyResolver;
 
     @Override
     public void setEnvironment(Environment environment) {

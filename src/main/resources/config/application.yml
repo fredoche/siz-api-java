@@ -12,7 +12,7 @@ async:
     corePoolSize: 2
     maxPoolSize: 50
     queueCapacity: 10000
-
+    
 mail:
     host: localhost
     port: 25
@@ -28,6 +28,7 @@ authentication:
         secret: myXAuthSecret
         # Token is valid 30 minutes
         tokenValidityInSeconds: 1800
+        headerName: X-Access-Token
 
 swagger:
     title: api API

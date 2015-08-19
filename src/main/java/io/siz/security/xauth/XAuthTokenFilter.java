@@ -15,16 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Filters incoming requests and installs a Spring Security principal
- * if a header corresponding to a valid user is found.
+ * Filters incoming requests and installs a Spring Security principal if a
+ * header corresponding to a valid user is found.
  */
 public class XAuthTokenFilter extends GenericFilterBean {
 
-    private final static String XAUTH_TOKEN_HEADER_NAME = "x-auth-token";
+    /**
+     * on injecte la valeur X-Access-Token
+     */
+    private String headerName = "x-auth-token";
 
-    private UserDetailsService detailsService;
+    private final UserDetailsService detailsService;
 
-    private TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
     public XAuthTokenFilter(UserDetailsService detailsService, TokenProvider tokenProvider) {
         this.detailsService = detailsService;
@@ -35,7 +38,7 @@ public class XAuthTokenFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         try {
             HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-            String authToken = httpServletRequest.getHeader(XAUTH_TOKEN_HEADER_NAME);
+            String authToken = httpServletRequest.getHeader(headerName);
             if (StringUtils.hasText(authToken)) {
                 String username = this.tokenProvider.getUserNameFromToken(authToken);
                 UserDetails details = this.detailsService.loadUserByUsername(username);
@@ -49,4 +52,9 @@ public class XAuthTokenFilter extends GenericFilterBean {
             throw new RuntimeException(ex);
         }
     }
+
+    public void setHeaderName(String headerName) {
+        this.headerName = headerName;
+    }
+
 }

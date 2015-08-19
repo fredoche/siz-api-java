@@ -8,13 +8,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class TokenProvider {
 
-    private final String secretKey;
-    private final int tokenValidity;
-
-    public TokenProvider(String secretKey, int tokenValidity) {
-        this.secretKey = secretKey;
-        this.tokenValidity = tokenValidity;
-    }
+    private String secretKey;
+    private int tokenValidity;
 
     public Token createToken(UserDetails userDetails) {
         long expires = System.currentTimeMillis() + 1000L * tokenValidity;
@@ -52,5 +47,13 @@ public class TokenProvider {
         String signature = parts[2];
         String signatureToMatch = computeSignature(userDetails, expires);
         return expires >= System.currentTimeMillis() && signature.equals(signatureToMatch);
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public void setTokenValidity(int tokenValidity) {
+        this.tokenValidity = tokenValidity;
     }
 }

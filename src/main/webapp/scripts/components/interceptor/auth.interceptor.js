@@ -9,7 +9,7 @@ angular.module('apiApp')
                 var token = localStorageService.get('token');
                 
                 if (token && token.expires && token.expires > new Date().getTime()) {
-                  config.headers['x-auth-token'] = token.token;
+                  config.headers['X-Access-Token'] = token.token;
                 }
                 
                 return config;

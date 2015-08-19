@@ -18,6 +18,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.Executor;
 
 import io.siz.async.ExceptionHandlingAsyncTaskExecutor;
+import org.springframework.core.env.PropertyResolver;
 
 @Configuration
 @EnableAsync
@@ -27,7 +28,7 @@ public class AsyncConfiguration implements AsyncConfigurer, EnvironmentAware {
 
     private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
 
-    private RelaxedPropertyResolver propertyResolver;
+    private PropertyResolver propertyResolver;
 
     @Override
     public void setEnvironment(Environment environment) {

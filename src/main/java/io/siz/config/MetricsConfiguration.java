@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
+import org.springframework.core.env.PropertyResolver;
 
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
@@ -52,7 +53,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
 
     private HealthCheckRegistry healthCheckRegistry = new HealthCheckRegistry();
 
-    private RelaxedPropertyResolver propertyResolver;
+    private PropertyResolver propertyResolver;
 
     @Override
     public void setEnvironment(Environment environment) {
@@ -96,7 +97,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
         @Inject
         private MetricRegistry metricRegistry;
 
-        private RelaxedPropertyResolver propertyResolver;
+        private PropertyResolver propertyResolver;
 
         @Override
         public void setEnvironment(Environment environment) {
@@ -133,7 +134,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
         @Inject
         private MetricRegistry metricRegistry;
 
-        private RelaxedPropertyResolver propertyResolver;
+        private PropertyResolver propertyResolver;
 
         @Override
         public void setEnvironment(Environment environment) {
