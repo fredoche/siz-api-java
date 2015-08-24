@@ -7,7 +7,10 @@ import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -20,7 +23,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "tokens")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@CompoundIndexes({
+    @CompoundIndex(name = "ip_1_date_-1", def = " { ip: 1, date: -1 }")})
 public class Event extends AbstractAuditingEntity implements Serializable {
 
     @Id

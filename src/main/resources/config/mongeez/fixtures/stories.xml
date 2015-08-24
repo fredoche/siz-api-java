@@ -1,0 +1,642 @@
+<mongoChangeLog>
+    <changeSet changeId="ChangeSet-2" author="jhipster">
+        <script>
+db.stories.insert(
+            {
+            "_id" : ObjectId("13837587423088dbabec77e4"),
+            "source" : {
+            "duration" : 13440,
+            "type" : "youtube",
+            "id" : "eA01LXjau9U"
+            },
+            "boxes" : [ 
+            {
+            "width" : 500,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13837587423088dbabec77e4/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13837587423088dbabec77e4/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 218
+            }, 
+            {
+            "width" : 500,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13837587423088dbabec77e4/1.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13837587423088dbabec77e4/1.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 218
+            }, 
+            {
+            "width" : 500,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13837587423088dbabec77e4/2.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13837587423088dbabec77e4/2.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 218
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/eA01LXjau9U/0.jpg"
+            },
+            "title" : "Robert Downey Jr at the age of 5",
+            "creationDate" : NumberLong(1383758742308),
+            "slug" : "robert-downey-jr-at-the-age-of-5",
+            "tags" : [ 
+            "downey", 
+            "cinema"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("13837949938820f01cec9fc3"),
+            "source" : {
+            "duration" : 3300,
+            "type" : "youtube",
+            "id" : "XwgULz7mB38"
+            },
+            "boxes" : [ 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13837949938820f01cec9fc3/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13837949938820f01cec9fc3/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 225
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13837949938820f01cec9fc3/1.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13837949938820f01cec9fc3/1.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 225
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/XwgULz7mB38/0.jpg"
+            },
+            "title" : "Ellen - America Sweetheart",
+            "creationDate" : NumberLong(1383794993882),
+            "slug" : "ellen-america-sweetheart",
+            "tags" : [ 
+            "ellen-degeneres", 
+            "tv"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("1384051840109828b1793529"),
+            "source" : {
+            "duration" : 31000,
+            "type" : "youtube",
+            "id" : "Q-h4ulFK2Ek"
+            },
+            "boxes" : [ 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 170
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/1.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/1.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 170
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/2.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/2.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 170
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/3.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/3.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 170
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/4.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/4.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 170
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/5.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1384051840109828b1793529/5.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 170
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/Q-h4ulFK2Ek/0.jpg"
+            },
+            "title" : "Who's Better: Thor or Loki?",
+            "creationDate" : NumberLong(1384051840109),
+            "slug" : "who-s-better-thor-or-loki",
+            "tags" : [ 
+            "best-of-tv", 
+            "tv"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("1384821134930777a0e7dfe7"),
+            "source" : {
+            "duration" : 6070,
+            "type" : "youtube",
+            "id" : "GbHuoluTStg"
+            },
+            "boxes" : [ 
+            {
+            "width" : 313,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1384821134930777a0e7dfe7/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1384821134930777a0e7dfe7/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 225
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/GbHuoluTStg/0.jpg"
+            },
+            "title" : "Jumping red Panda",
+            "creationDate" : NumberLong(1384821134930),
+            "slug" : "jumping-red-panda",
+            "tags" : [ 
+            "red-panda", 
+            "animals"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("13850325227578bb34c271b5"),
+            "source" : {
+            "duration" : 12000,
+            "type" : "youtube",
+            "id" : "rAVXA1N6M4I"
+            },
+            "boxes" : [ 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13850325227578bb34c271b5/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13850325227578bb34c271b5/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 175
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13850325227578bb34c271b5/1.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13850325227578bb34c271b5/1.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 175
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13850325227578bb34c271b5/2.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13850325227578bb34c271b5/2.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 175
+            }, 
+            {
+            "width" : 245,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13850325227578bb34c271b5/3.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13850325227578bb34c271b5/3.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 175
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/rAVXA1N6M4I/0.jpg"
+            },
+            "title" : "Pitch Perfect - Crystal meth",
+            "creationDate" : NumberLong(1385032522757),
+            "slug" : "pitch-perfect-crystal-meth",
+            "tags" : [ 
+            "funny-movie-scenes", 
+            "cinema"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("1396809815420a6e57e953d1"),
+            "source" : {
+            "duration" : 6000,
+            "type" : "youtube",
+            "id" : "yJ4gAD0LQwI"
+            },
+            "boxes" : [ 
+            {
+            "width" : 202,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1396809815420a6e57e953d1/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1396809815420a6e57e953d1/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 360
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/yJ4gAD0LQwI/0.jpg"
+            },
+            "title" : "Awkward..",
+            "creationDate" : NumberLong(1396809815420),
+            "slug" : "awkward",
+            "tags" : [ 
+            "dog", 
+            "animals"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("138503340695789d27de9bd4"),
+            "source" : {
+            "duration" : 43000,
+            "type" : "youtube",
+            "id" : "zZGNk8pUj4Y"
+            },
+            "boxes" : [ 
+            {
+            "width" : 350,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/138503340695789d27de9bd4/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/138503340695789d27de9bd4/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 198
+            }, 
+            {
+            "width" : 350,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/138503340695789d27de9bd4/1.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/138503340695789d27de9bd4/1.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 198
+            }, 
+            {
+            "width" : 350,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/138503340695789d27de9bd4/2.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/138503340695789d27de9bd4/2.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 198
+            }, 
+            {
+            "width" : 350,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/138503340695789d27de9bd4/3.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/138503340695789d27de9bd4/3.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 198
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/zZGNk8pUj4Y/0.jpg"
+            },
+            "title" : "Japanese dinosaur Prank",
+            "creationDate" : NumberLong(1385033406957),
+            "slug" : "japanese-dinosaur-prank",
+            "tags" : [ 
+            "pranks", 
+            "funny"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("13850411709707d77e293042"),
+            "source" : {
+            "duration" : 16000,
+            "type" : "youtube",
+            "id" : "D0s5iQw5k_4"
+            },
+            "boxes" : [ 
+            {
+            "width" : 500,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13850411709707d77e293042/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13850411709707d77e293042/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 180
+            }, 
+            {
+            "width" : 500,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13850411709707d77e293042/1.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13850411709707d77e293042/1.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 180
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/D0s5iQw5k_4/0.jpg"
+            },
+            "title" : "The Other Guys - Tips to stay out of jail",
+            "creationDate" : NumberLong(1385041170970),
+            "slug" : "the-other-guys-tips-to-stay-out-of-jail",
+            "tags" : [ 
+            "funny-movie-scenes", 
+            "cinema"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("1385041205506c5c1b3660e0"),
+            "source" : {
+            "duration" : 10000,
+            "type" : "youtube",
+            "id" : "UeVhTcIvPMg"
+            },
+            "boxes" : [ 
+            {
+            "width" : 250,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1385041205506c5c1b3660e0/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1385041205506c5c1b3660e0/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 156
+            }, 
+            {
+            "width" : 250,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1385041205506c5c1b3660e0/1.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1385041205506c5c1b3660e0/1.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 156
+            }, 
+            {
+            "width" : 250,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1385041205506c5c1b3660e0/2.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1385041205506c5c1b3660e0/2.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 156
+            }, 
+            {
+            "width" : 247,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/1385041205506c5c1b3660e0/3.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/1385041205506c5c1b3660e0/3.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 154
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/UeVhTcIvPMg/0.jpg"
+            },
+            "title" : "Mr Deeds - Elevator business",
+            "creationDate" : NumberLong(1385041205506),
+            "slug" : "mr-deeds-elevator-business",
+            "tags" : [ 
+            "funny-movie-scenes", 
+            "cinema"
+            ],
+            "privacy" : "Public"
+            }
+);
+db.stories.insert(
+            {
+            "_id" : ObjectId("13850412757818c97dae8079"),
+            "source" : {
+            "duration" : 5000,
+            "type" : "youtube",
+            "id" : "Tks28Az5lzk"
+            },
+            "boxes" : [ 
+            {
+            "width" : 500,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13850412757818c97dae8079/0.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13850412757818c97dae8079/0.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 200
+            }, 
+            {
+            "width" : 500,
+            "formats" : [ 
+            {
+            "href" : "//fun.siz.io/stories/13850412757818c97dae8079/1.mp4",
+            "type" : "mp4"
+            }, 
+            {
+            "href" : "//fun.siz.io/stories/13850412757818c97dae8079/1.gif",
+            "type" : "gif"
+            }
+            ],
+            "height" : 200
+            }
+            ],
+            "picture" : {
+            "href" : "//img.youtube.com/vi/Tks28Az5lzk/0.jpg"
+            },
+            "title" : "The Other Guys - The best driving school",
+            "creationDate" : NumberLong(1385041275781),
+            "slug" : "the-other-guys-the-best-driving-school",
+            "tags" : [ 
+            "funny-movie-scenes", 
+            "cinema"
+            ],
+            "privacy" : "Public"
+            }
+)
+        </script>
+    </changeSet>
+</mongoChangeLog>

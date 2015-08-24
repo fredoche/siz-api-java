@@ -12,10 +12,10 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  *
@@ -34,11 +34,9 @@ public class EventEndpoint {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-//    @Secured(value = "ROLE_USER")
-    public EventWrapperDTO create(EventWrapperDTO submittedEventDto, HttpServletRequest request) throws SizException {
-        final Optional<Story> s = Optional.of(storyDao.findOne(submittedEventDto.getEvent().getStoryId()));
-        return s
-                .map(story -> {
+    public EventWrapperDTO create(@RequestBody EventWrapperDTO submittedEventDto, HttpServletRequest request) throws SizException {
+        final Optional<Story> s = Optional.ofNullable(storyDao.findOne(submittedEventDto.getEvent().getStoryId()));
+        return s.map(story -> {
                     Event event = new Event();
                     eventService.create(
                             event,

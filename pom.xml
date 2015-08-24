@@ -508,7 +508,7 @@
                 <configuration>
                     <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
                     <arguments>
-                        <argument>--spring.profiles.active=dev</argument>
+                        <argument>--spring.profiles.active=dev,fixtures</argument>
                     </arguments>
                 </configuration>
             </plugin>
