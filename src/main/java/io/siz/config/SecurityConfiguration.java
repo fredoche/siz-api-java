@@ -62,17 +62,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
-                .and()
+            .and()
                 .csrf()
                 .disable()
                 .headers()
                 .frameOptions()
                 .disable()
-                .and()
+            .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+            .and()
                 .authorizeRequests()
+                .antMatchers("/tokens").permitAll()
+                .antMatchers("/events").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/activate").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
@@ -98,7 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/configuration/ui").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/swagger-ui.html").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/protected/**").authenticated()
-                .and()
+            .and()
                 .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     }

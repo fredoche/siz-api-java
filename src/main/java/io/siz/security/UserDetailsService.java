@@ -1,6 +1,5 @@
 package io.siz.security;
 
-import io.siz.domain.Authority;
 import io.siz.domain.User;
 import io.siz.repository.UserRepository;
 import org.slf4j.Logger;
@@ -13,11 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,6 +37,10 @@ public class UserDetailsService implements org.springframework.security.core.use
             if (!user.getActivated()) {
                 throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
             }
+            /**
+             * on mappe siz.user et siz.authorities sur spring.security.User et
+             * spring.security.Authorities
+             */
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                     .collect(Collectors.toList());

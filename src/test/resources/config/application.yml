@@ -33,6 +33,13 @@ mail:
 metrics:
     jmx.enabled: false
 
+authentication:
+    xauth:
+        secret: myXAuthSecret
+        # Token is valid 30 minutes
+        tokenValidityInSeconds: 1800
+        headerName: X-Access-Token
+
 swagger:
     apiDocsLocation: http://localhost:8080
     title: jhipster API

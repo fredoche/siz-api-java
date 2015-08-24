@@ -7,7 +7,6 @@ import io.siz.repository.UserRepository;
 import io.siz.security.SecurityUtils;
 import io.siz.service.util.RandomUtil;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
