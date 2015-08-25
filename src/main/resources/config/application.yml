@@ -8,6 +8,11 @@ endpoints.jolokia.enabled: false
 # security configuration (this key should be unique for your application, and kept secret)
 jhipster.security.rememberme.key: 6574b55de695ea975bef8eb148c3b9853194f595
 
+spring:
+    data:
+        mongodb:
+            database: siz
+
 async:
     corePoolSize: 2
     maxPoolSize: 50

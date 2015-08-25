@@ -1,0 +1,60 @@
+<mongoChangeLog>
+    <changeSet changeId="ChangeSet-fixtures-2" author="jhipster">
+        <script>
+db.viewerprofiles.insert(
+{
+    "_id" : ObjectId("54bd23101900001900f0afdc"),
+    "likeStoryIds" : [ 
+        "13837587423088dbabec77e4", 
+        "13837949938820f01cec9fc3", 
+        "1384051840109828b1793529"
+    ],
+    "tagsWeights" : {
+        "meaningful-videos" : 8.0000000000000000,
+        "technology" : 3.0000000000000000,
+        "best-vines" : 1
+    },
+    "nopeStoryIds" : [ 
+        "1384821134930777a0e7dfe7", 
+        "13850325227578bb34c271b5", 
+        "1396809815420a6e57e953d1"
+    ]
+}
+);
+db.viewerprofiles.insert(
+{
+    "_id" : ObjectId("54c7e8a41700001700642826"),
+    "nopeStoryIds" : [ 
+        "138503340695789d27de9bd4", 
+        "13850411709707d77e293042"
+    ],
+    "tagsWeights" : {
+        "commercials" : 1.0000000000000000,
+        "cute-animals" : 0.0000000000000000,
+        "best-vines" : 1.0000000000000000
+    },
+    "likeStoryIds" : [ 
+        "1385041205506c5c1b3660e0", 
+        "13850412757818c97dae8079", 
+        "13837587423088dbabec77e4"
+    ]
+}
+);
+db.viewerprofiles.insert(
+{
+    "_id" : ObjectId("54c9487d1700003a9b64284a"),
+    "nopeStoryIds" : [ 
+        "13837949938820f01cec9fc3", 
+        "1384051840109828b1793529", 
+        "1384821134930777a0e7dfe7"
+    ],
+    "tagsWeights" : {
+        "best-of-tv" : -1.0000000000000000,
+        "tv" : -1.0000000000000000,
+        "cute" : -1.0000000000000000
+    }
+}
+);
+        </script>
+    </changeSet>
+</mongoChangeLog>
