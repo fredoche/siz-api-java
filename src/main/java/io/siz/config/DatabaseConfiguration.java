@@ -2,7 +2,6 @@ package io.siz.config;
 
 import com.mongodb.Mongo;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import org.mongeez.Mongeez;
 import org.slf4j.Logger;
@@ -69,11 +68,11 @@ public class DatabaseConfiguration extends AbstractMongoConfiguration {
 
                     @Override
                     public Date convert(Long source) {
-                        log.trace("converting long to date: %l -> %d", source, new Date());
+                        log.trace("converting long to date: {} -> {}", source, new Date());
                         return new Date(source);
                     }
-                }
-        ));
+                })
+        );
     }
 
     @Bean
