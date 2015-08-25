@@ -40,7 +40,7 @@ public class EventEndpoint {
                     Event event = new Event();
                     eventService.create(
                             event,
-                            story, SecurityContextHolder.getContext().getAuthentication(),
+                            story,
                             request.getRemoteAddr());
                     event.setStoryId(story.getId());
                     final EventWrapperDTO eventWrapperDTO = new EventWrapperDTO(event);
