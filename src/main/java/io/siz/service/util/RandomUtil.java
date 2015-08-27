@@ -38,4 +38,11 @@ public final class RandomUtil {
    public static String generateResetKey() {
        return RandomStringUtils.randomNumeric(DEF_COUNT);
    }
+   
+   /**
+    * Generate a token
+    */
+   public static String generateToken() {
+       return RandomStringUtils.randomNumeric(DEF_COUNT);
+   }
 }

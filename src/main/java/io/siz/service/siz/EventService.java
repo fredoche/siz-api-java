@@ -3,7 +3,7 @@ package io.siz.service.siz;
 import com.mongodb.WriteResult;
 import io.siz.domain.siz.Event;
 import io.siz.domain.siz.Story;
-import io.siz.domain.siz.Token;
+import io.siz.domain.siz.SizToken;
 import io.siz.repository.siz.EventRepository;
 import io.siz.repository.siz.ViewerProfileRepository;
 import javax.inject.Inject;

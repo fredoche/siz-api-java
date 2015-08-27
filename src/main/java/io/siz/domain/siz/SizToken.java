@@ -14,7 +14,7 @@ import org.springframework.data.annotation.Transient;
  */
 @Document(collection = "tokens")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Token extends AbstractAuditingEntity implements Serializable {
+public class SizToken extends AbstractAuditingEntity implements Serializable {
 
     @Id
     private String id;
@@ -63,5 +63,4 @@ public class Token extends AbstractAuditingEntity implements Serializable {
     public void setStoryIdToShow(String storyIdToShow) {
         this.storyIdToShow = storyIdToShow;
     }
-
 }

@@ -29,6 +29,8 @@ mail:
     from: api@localhost
 
 authentication:
+    siz:
+        headerName: X-Access-Token
     xauth:
         secret: myXAuthSecret
         # Token is valid 30 minutes

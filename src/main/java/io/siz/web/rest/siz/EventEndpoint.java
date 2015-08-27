@@ -11,6 +11,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,18 +35,19 @@ public class EventEndpoint {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({"ROLE_USER"})
     public EventWrapperDTO create(@RequestBody EventWrapperDTO submittedEventDto, HttpServletRequest request) throws SizException {
-        final Optional<Story> s = Optional.ofNullable(storyDao.findOne(submittedEventDto.getEvent().getStoryId()));
+        final Event event = submittedEventDto.getEvent();
+        final Optional<Story> s = Optional.ofNullable(storyDao.findOne(event.getStoryId()));
         return s.map(story -> {
-                    Event event = new Event();
-                    eventService.create(
-                            event,
-                            story,
-                            request.getRemoteAddr());
-                    event.setStoryId(story.getId());
-                    final EventWrapperDTO eventWrapperDTO = new EventWrapperDTO(event);
-                    return eventWrapperDTO;
-                })
+            eventService.create(
+                    event,
+                    story,
+                    request.getRemoteAddr());
+            event.setStoryId(story.getId());
+            final EventWrapperDTO eventWrapperDTO = new EventWrapperDTO(event);
+            return eventWrapperDTO;
+        })
                 .orElseThrow(() -> new SizException());
     }
 }

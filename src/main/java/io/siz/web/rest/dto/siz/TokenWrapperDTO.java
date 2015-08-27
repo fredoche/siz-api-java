@@ -1,7 +1,7 @@
 package io.siz.web.rest.dto.siz;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.siz.domain.siz.Token;
+import io.siz.domain.siz.SizToken;
 
 /**
  * Classe pour créer un json correspondant à { "tokens": { "id": "xxx",
@@ -12,17 +12,17 @@ import io.siz.domain.siz.Token;
 public class TokenWrapperDTO {
 
     @JsonProperty("tokens") // keep typo because its used in the interface.
-    private Token token;
+    private SizToken token;
 
-    public TokenWrapperDTO(Token token) {
+    public TokenWrapperDTO(SizToken token) {
         this.token = token;
     }
 
-    public Token getToken() {
+    public SizToken getToken() {
         return token;
     }
 
-    public void setToken(Token token) {
+    public void setToken(SizToken token) {
         this.token = token;
     }
 }

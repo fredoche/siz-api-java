@@ -73,7 +73,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private DateTime resetDate = null;
 
     @JsonIgnore
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<Authority> authorities;
 
     public String getId() {
         return id;

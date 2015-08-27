@@ -1,4 +1,4 @@
-package io.siz.config;
+package io.siz.security.siz;
 
 import io.siz.security.*;
 import io.siz.security.xauth.*;
@@ -23,16 +23,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SizSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
     private Http401UnauthorizedEntryPoint authenticationEntryPoint;
 
     @Inject
     private UserDetailsService userDetailsService;
+    @Inject
+    private SizTokenDetailsService sizTokenDetailsService;
 
     @Inject
     private XAuthTokenFilter xAuthTokenFilter;
+
+//    @Inject
+//    private SizTokenAuthFilter sizTokenAuthFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,6 +47,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
+                .userDetailsService(sizTokenDetailsService)
+                .and()
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
@@ -103,7 +110,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/protected/**").authenticated()
                 .and()
-                .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(sizTokenAuthFilter, XAuthTokenFilter.class)
+;
     }
 
     @Bean

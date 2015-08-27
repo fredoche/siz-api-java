@@ -1,4 +1,4 @@
-package io.siz.config;
+package io.siz.security;
 
 import io.siz.security.xauth.TokenProvider;
 import io.siz.security.xauth.XAuthTokenFilter;
@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 /**
@@ -44,9 +43,4 @@ public class XAuthConfiguration implements EnvironmentAware {
         xAuthTokenFilter.setHeaderName(headerName);
         return xAuthTokenFilter;
     }
-    
-//    @Bean 
-//    public AnonymousAuthenticationFilter anonymousAuthenticationFilter() {
-//        return new AnonymousAuthenticationFilter();
-//    }
 }
