@@ -13,6 +13,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 
 /**
@@ -20,6 +22,8 @@ import org.springframework.security.core.Authentication;
  * header corresponding to a valid user is found.
  */
 public class XAuthTokenFilter extends GenericFilterBean {
+
+    private final Logger log = LoggerFactory.getLogger(XAuthTokenFilter.class);
 
     /**
      * on injecte la valeur X-Access-Token
@@ -52,9 +56,10 @@ public class XAuthTokenFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(token);
                 }
             }
-            filterChain.doFilter(servletRequest, servletResponse);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            log.info("unable to log with xauth filter.");
+        } finally {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 

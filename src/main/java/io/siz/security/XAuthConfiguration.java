@@ -5,16 +5,16 @@ import io.siz.security.xauth.XAuthTokenFilter;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 
 /**
  * Configures x-auth-token security. Header can be configured by overriding
  * headerName.
  */
-@Component
+@Configuration
 public class XAuthConfiguration implements EnvironmentAware {
 
     private String secret;

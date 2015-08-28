@@ -1,6 +1,8 @@
 package io.siz.config;
 
 import io.siz.security.*;
+import io.siz.security.siz.SizAuthTokenFilter;
+import io.siz.security.siz.SizTokenAuthenticationProvider;
 import io.siz.security.xauth.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     private XAuthTokenFilter xAuthTokenFilter;
 
+    @Inject
+    private SizTokenAuthenticationProvider authenticationProvider;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -60,6 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .authenticationProvider(authenticationProvider)
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
@@ -76,7 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 /**
                  * only anonymous users are able to create tokens.
                  */
-                .antMatchers("/tokens").anonymous()
+                .antMatchers("/tokens").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/activate").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
@@ -103,7 +109,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/protected/**").authenticated()
                 .and()
-                .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new SizAuthTokenFilter("X-Access-Token"), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
