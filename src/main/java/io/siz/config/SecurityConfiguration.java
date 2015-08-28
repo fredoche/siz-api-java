@@ -47,6 +47,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
+                .userDetailsService(sizUserDetailsService).
+                and()
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
@@ -109,7 +111,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/protected/**").authenticated()
                 .and()
                 .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new SizAuthTokenFilter("X-Access-Token", sizUserDetailsService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new SizAuthTokenFilter("X-Access-Token", sizUserDetailsService), UsernamePasswordAuthenticationFilter.class)
+                ;
     }
 
     @Bean

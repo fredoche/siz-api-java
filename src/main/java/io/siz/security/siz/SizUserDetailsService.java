@@ -37,7 +37,8 @@ public class SizUserDetailsService implements org.springframework.security.core.
              */
             return new org.springframework.security.core.userdetails.User(
                     sizToken.getId(),
-                    ""/*there is no password involved*/,
+                    // token /* may match the password of the Principal put in the security context*/,
+                    "", //password peut aussi servir a rien pour la suite,
                     Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
         }).orElseThrow(() -> new NonceExpiredException("Token " + token + " is invalid or expired."));
     }
