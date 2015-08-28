@@ -30,7 +30,7 @@ public class SizAuthTokenFilter extends GenericFilterBean {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         try {
             HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
             String authToken = httpServletRequest.getHeader(headerName);
@@ -46,8 +46,9 @@ public class SizAuthTokenFilter extends GenericFilterBean {
                         );
 
             }
+            filterChain.doFilter(servletRequest, servletResponse);
         } catch (Exception ex) {
-            log.info("unable to log with sizauth filter.");
+            throw new RuntimeException(ex);
         }
     }
 }

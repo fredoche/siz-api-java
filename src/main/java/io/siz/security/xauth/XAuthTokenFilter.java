@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 
 /**
  * Filters incoming requests and installs a Spring Security principal if a
