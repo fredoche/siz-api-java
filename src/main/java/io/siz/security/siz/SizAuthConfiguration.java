@@ -9,8 +9,9 @@ import org.springframework.core.env.PropertyResolver;
 /**
  * Configures x-auth-token security. Header can be configured by overriding
  * headerName.
+ * @deprecated en attendant de savoir si on en a besoin
  */
-@Configuration
+//@Configuration
 public class SizAuthConfiguration implements EnvironmentAware {
 
     private String headerName;

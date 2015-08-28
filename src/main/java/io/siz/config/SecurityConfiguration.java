@@ -2,7 +2,7 @@ package io.siz.config;
 
 import io.siz.security.*;
 import io.siz.security.siz.SizAuthTokenFilter;
-import io.siz.security.siz.SizTokenAuthenticationProvider;
+import io.siz.security.siz.SizUserDetailsService;
 import io.siz.security.xauth.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,10 +34,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Inject
-    private XAuthTokenFilter xAuthTokenFilter;
+    private SizUserDetailsService sizUserDetailsService;
 
     @Inject
-    private SizTokenAuthenticationProvider authenticationProvider;
+    private XAuthTokenFilter xAuthTokenFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -65,7 +65,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authenticationProvider(authenticationProvider)
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
@@ -110,7 +109,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/protected/**").authenticated()
                 .and()
                 .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new SizAuthTokenFilter("X-Access-Token"), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new SizAuthTokenFilter("X-Access-Token", sizUserDetailsService), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

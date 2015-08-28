@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * Structure intermédiaire pour d'abord stocker les information d'identité, puis
  * ensuite être testé pour valider l'authentification.
  *
+ * @deprecated en attendant de savoir si on en a besoin
  * @author fred
  */
 public class SizAuthToken extends AbstractAuthenticationToken {

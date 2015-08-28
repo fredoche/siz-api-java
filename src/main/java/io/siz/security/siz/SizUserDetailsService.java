@@ -16,10 +16,10 @@ import org.springframework.security.web.authentication.www.NonceExpiredException
 /**
  * Authenticate a user with a working token.
  */
-@Component("sizTokenDetailsService")
-public class SizTokenDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+@Component("SizUserDetailsService")
+public class SizUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private final Logger log = LoggerFactory.getLogger(SizTokenDetailsService.class);
+    private final Logger log = LoggerFactory.getLogger(SizUserDetailsService.class);
 
     @Inject
     private SizTokenRepository sizTokenRepository;

@@ -4,33 +4,51 @@ import org.springframework.util.StringUtils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.filter.GenericFilterBean;
 
-public class SizAuthTokenFilter extends AbstractAuthenticationProcessingFilter {
+public class SizAuthTokenFilter extends GenericFilterBean {
 
+    private final Logger log = LoggerFactory.getLogger(SizAuthTokenFilter.class);
     /**
      * on injecte la valeur X-Access-Token
      */
     private final String headerName;
 
-    public SizAuthTokenFilter(String headerName) {
-        super("/*");// allow any request to contain an authorization header
+    private final SizUserDetailsService sizTokenDetailsService;
+
+    public SizAuthTokenFilter(String headerName, SizUserDetailsService sizTokenDetailsService) {
         this.headerName = headerName;
+        this.sizTokenDetailsService = sizTokenDetailsService;
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        String authToken = request.getHeader(headerName);
-        if (StringUtils.hasText(authToken)) {
-            return new SizAuthToken(authToken, null, null);
-        }
-        /**
-         * pas d'en-tête, on laisse faire les autres filtres.
-         */
-        return null;
-    }
+    public void doFilter(ServletRequest servletRequest, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        try {
+            HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+            String authToken = httpServletRequest.getHeader(headerName);
+            if (StringUtils.hasText(authToken)) {
+                UserDetails details = sizTokenDetailsService.loadUserByUsername(authToken);
 
+                /**
+                 * From that point the user is considered to be authenticated.
+                 */
+                SecurityContextHolder.getContext()
+                        .setAuthentication(
+                                new UsernamePasswordAuthenticationToken(details, authToken, details.getAuthorities())
+                        );
+
+            }
+        } catch (Exception ex) {
+            log.info("unable to log with sizauth filter.");
+        }
+    }
 }
