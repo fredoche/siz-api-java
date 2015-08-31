@@ -46,9 +46,9 @@ public class SizAuthTokenFilter extends GenericFilterBean {
                         );
 
             }
-            filterChain.doFilter(servletRequest, servletResponse);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+//            throw new RuntimeException(ex);
         }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

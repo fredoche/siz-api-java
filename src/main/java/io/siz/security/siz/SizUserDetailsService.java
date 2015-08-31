@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.Optional;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.NonceExpiredException;
 
 /**
@@ -40,6 +41,6 @@ public class SizUserDetailsService implements org.springframework.security.core.
                     // token /* may match the password of the Principal put in the security context*/,
                     "", //password peut aussi servir a rien pour la suite,
                     Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-        }).orElseThrow(() -> new NonceExpiredException("Token " + token + " is invalid or expired."));
+        }).orElseThrow(() -> new UsernameNotFoundException("Token " + token + " is invalid or expired."));
     }
 }

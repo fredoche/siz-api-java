@@ -51,10 +51,10 @@ public class XAuthTokenFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(token);
                 }
             }
-            filterChain.doFilter(servletRequest, servletResponse);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+//            throw new RuntimeException(ex);
         }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     public void setHeaderName(String headerName) {
