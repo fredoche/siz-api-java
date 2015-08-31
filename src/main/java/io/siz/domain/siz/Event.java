@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -23,7 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  *
  * @author fred
  */
-@Document(collection = "tokens")
+@Document(collection = "events")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,7 +46,8 @@ public class Event extends AbstractAuditingEntity implements Serializable {
     @DBRef
     @JsonIgnore
     private ViewerProfile viewerProfile = new ViewerProfile();
-    private Date date;
+
+    private Date date = DateTime.now().toDate();
 
     private EventType type;
 
