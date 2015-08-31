@@ -5,6 +5,7 @@ import io.siz.domain.siz.Event;
 import io.siz.domain.siz.EventType;
 import io.siz.domain.siz.ViewerProfile;
 import io.siz.repository.siz.ViewerProfileRepositoryCustom;
+import java.util.Optional;
 import javax.inject.Inject;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Update;
@@ -42,14 +43,13 @@ public class ViewerProfileRepositoryImpl implements ViewerProfileRepositoryCusto
         )
       )
          */
-        
+
         final Query query = new Query(
                 where("id").is(e.getViewerProfile().getId())
                 .and("LikeStoryIds").nin(storyId)
                 .and("NopeStoryIds").nin(storyId)
-                
         );
-        
+
         /**
          * update
          *  val updateQuery = if (event.tags.isEmpty) {
@@ -65,18 +65,18 @@ public class ViewerProfileRepositoryImpl implements ViewerProfileRepositoryCusto
       )
     }
          */
-        
         String arrayToAddTo = e.getType() + "StoryIds";
         String arrayToRemoveFrom = e.getType() == EventType.NOPE ? "LikeStoryIds" : "NopeStoryIds";
         final Update update = new Update()
                 .addToSet(arrayToAddTo, storyId)
                 .pull(arrayToRemoveFrom, storyId);
-        
-        e.getTags().stream().map(tag -> 
-                update.inc("tagsWeights." + tag, e.getType().getTagsWeights())
+
+        Optional.ofNullable(e.getTags()).map(tags
+                -> tags.stream().map(tag
+                        -> update.inc("tagsWeights." + tag, e.getType().getTagsWeights())
+                )
         );
-        
-        
+
         return template.updateMulti(
                 query,
                 update,

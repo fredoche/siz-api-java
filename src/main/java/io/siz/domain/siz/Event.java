@@ -1,5 +1,6 @@
 package io.siz.domain.siz;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.siz.domain.AbstractAuditingEntity;
 import java.io.Serializable;
@@ -35,9 +36,15 @@ public class Event extends AbstractAuditingEntity implements Serializable {
 
     private String storyId;
     private List<String> tags;
+    /**
+     * An event of a non-registered user is associated to an abstract
+     * viewerprofile, which is a document-id without any actual document in then
+     * viewerprofile collection.
+     */
     @Field("viewerProfileId")
     @DBRef
-    private ViewerProfile viewerProfile;
+    @JsonIgnore
+    private ViewerProfile viewerProfile = new ViewerProfile();
     private Date date;
 
     private EventType type;
