@@ -1,11 +1,11 @@
 package io.siz.repository.siz;
 
 import io.siz.domain.siz.ViewerProfile;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import io.siz.repository.secure.SecureMongoRepository;
 
 /**
  *
  * @author fred
  */
-public interface ViewerProfileRepository extends MongoRepository<ViewerProfile, String>, ViewerProfileRepositoryCustom {
+public interface ViewerProfileRepository extends SecureMongoRepository<ViewerProfile, String>, ViewerProfileRepositoryCustom {
 }

@@ -1,12 +1,12 @@
 package io.siz.repository.siz;
 
 import io.siz.domain.siz.Event;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import io.siz.repository.secure.SecureMongoRepository;
 
 /**
  *
  * @author fred
  */
-public interface EventRepository extends MongoRepository<Event, String> {
+public interface EventRepository extends SecureMongoRepository<Event, String> {
 
 }
