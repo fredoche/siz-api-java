@@ -13,11 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  * Wraps an implementation of Spring Boot's AuditEventRepository.
  */
 @Repository
+@RepositoryRestResource(exported = false)
 public class CustomAuditEventRepository {
 
     @Inject

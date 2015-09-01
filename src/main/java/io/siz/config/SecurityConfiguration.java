@@ -44,8 +44,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Inject
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    /**
+     * il y a une façon alternative de faire ça avec @inject configureglobal. cf
+     * http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#hello-web-security-java-configuration
+     * mais elle pose probleme avec spring data rest donc on va faire simple
+     * ici.
+     *
+     * @param auth
+     * @throws Exception
+     */
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(sizUserDetailsService).
                 and()
@@ -111,8 +120,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/protected/**").authenticated()
                 .and()
                 .addFilterBefore(xAuthTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new SizAuthTokenFilter("X-Access-Token", sizUserDetailsService), UsernamePasswordAuthenticationFilter.class)
-                ;
+                .addFilterBefore(new SizAuthTokenFilter("X-Access-Token", sizUserDetailsService), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
