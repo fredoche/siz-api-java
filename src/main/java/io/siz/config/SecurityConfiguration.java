@@ -45,16 +45,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * il y a une façon alternative de faire ça avec @inject configureglobal. cf
+     * il y a deux façons de faire ça avec @inject configureglobal et @override
+     * configure(auth) cf
      * http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#hello-web-security-java-configuration
-     * mais elle pose probleme avec spring data rest donc on va faire simple
-     * ici.
-     *
+     * mais ya des pbms avec spring secu et spring data donc gaffe.
+     * https://jira.spring.io/browse/SEC-2661
      * @param auth
      * @throws Exception
      */
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Inject
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(sizUserDetailsService).
                 and()
