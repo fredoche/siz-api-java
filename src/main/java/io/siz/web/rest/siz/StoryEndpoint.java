@@ -44,8 +44,8 @@ public class StoryEndpoint {
 
     @Timed
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public StoryOutWrapperDTO createStory(@RequestBody StoryInWrapperDTO wrapper) throws SizException {
-        // TODO utiliser mapstruct eventuellement, plutot que ce mapping boring.
         return wrapper.getStories().stream()
                 .map(storyDto -> {
                     final Story story = new Story();

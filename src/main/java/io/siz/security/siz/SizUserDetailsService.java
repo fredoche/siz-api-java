@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.authentication.www.NonceExpiredException;
 
 /**
  * Authenticate a user with a working token.

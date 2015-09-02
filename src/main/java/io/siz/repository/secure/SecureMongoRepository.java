@@ -34,7 +34,7 @@ public interface SecureMongoRepository<T, ID extends Serializable> extends Mongo
      * {@inheritDoc}
      */
     @Override
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<T> findAll(Sort sort);
 
     /**
