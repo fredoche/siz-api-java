@@ -1,7 +1,11 @@
 package io.siz.domain.siz;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.siz.domain.AbstractAuditingEntity;
+import io.siz.domain.siz.story.Box;
+import io.siz.domain.siz.story.Picture;
+import io.siz.domain.siz.story.Source;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Story extends AbstractAuditingEntity implements Serializable {
 
     @Id
+    @JsonIgnore
     private String id;
     private Source source;
     private List<Box> boxes;
@@ -29,37 +34,4 @@ public class Story extends AbstractAuditingEntity implements Serializable {
     private String slug;
     private List<String> tags;
     private String privacy;
-
-    @Data
-    private static class Format {
-
-        private String href;
-        private String type;
-    }
-
-    @Data
-    private class Source {
-
-        private Integer duration;
-        private String type;
-        private String id;
-
-    }
-
-    @Data
-    private class Picture {
-
-        private String href;
-
-    }
-
-    @Data
-    private class Box {
-
-        private Integer width;
-        private Integer height;
-        private List<Format> formats;
-
-    }
-
 }

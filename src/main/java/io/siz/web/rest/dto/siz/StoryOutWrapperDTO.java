@@ -11,13 +11,12 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class StoryWrapperDTO {
+public class StoryOutWrapperDTO {
 
     @JsonProperty("stories") // keep typo because its used in the interface.
     private Story story;
 
-    public StoryWrapperDTO(Story story) {
+    public StoryOutWrapperDTO(Story story) {
         this.story = story;
     }
-
 }
