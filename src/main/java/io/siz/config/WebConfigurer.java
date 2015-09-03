@@ -23,13 +23,16 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.http.MediaType;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
  */
 @Configuration
 @AutoConfigureAfter(CacheConfiguration.class)
-public class WebConfigurer implements ServletContextInitializer, EmbeddedServletContainerCustomizer {
+public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletContextInitializer, EmbeddedServletContainerCustomizer {
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
@@ -49,9 +52,20 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION)) {
             initCachingHttpHeadersFilter(servletContext, disps);
             initStaticResourcesProductionFilter(servletContext, disps);
-            initGzipFilter(servletContext, disps); 
-       }
+            initGzipFilter(servletContext, disps);
+        }
         log.info("Web application fully configured");
+    }
+
+    /**
+     * Si le client http spécifie pas content type, on imagine que par défaut
+     * c'est du json qui est demandé, dans le doute.
+     * cf https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc
+     * @param configurer
+     */
+    @Override
+    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+        configurer.defaultContentType(MediaType.APPLICATION_JSON);
     }
 
     /**
@@ -90,11 +104,11 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      * Initializes the static resources production Filter.
      */
     private void initStaticResourcesProductionFilter(ServletContext servletContext,
-                                                     EnumSet<DispatcherType> disps) {
+            EnumSet<DispatcherType> disps) {
 
         log.debug("Registering static resources production Filter");
-        FilterRegistration.Dynamic staticResourcesProductionFilter =
-                servletContext.addFilter("staticResourcesProductionFilter",
+        FilterRegistration.Dynamic staticResourcesProductionFilter
+                = servletContext.addFilter("staticResourcesProductionFilter",
                         new StaticResourcesProductionFilter());
 
         staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/");
@@ -108,10 +122,10 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      * Initializes the caching HTTP Headers Filter.
      */
     private void initCachingHttpHeadersFilter(ServletContext servletContext,
-                                              EnumSet<DispatcherType> disps) {
+            EnumSet<DispatcherType> disps) {
         log.debug("Registering Caching HTTP Headers Filter");
-        FilterRegistration.Dynamic cachingHttpHeadersFilter =
-                servletContext.addFilter("cachingHttpHeadersFilter",
+        FilterRegistration.Dynamic cachingHttpHeadersFilter
+                = servletContext.addFilter("cachingHttpHeadersFilter",
                         new CachingHttpHeadersFilter(env));
 
         cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/assets/*");
@@ -137,8 +151,8 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         metricsFilter.setAsyncSupported(true);
 
         log.debug("Registering Metrics Servlet");
-        ServletRegistration.Dynamic metricsAdminServlet =
-                servletContext.addServlet("metricsServlet", new MetricsServlet());
+        ServletRegistration.Dynamic metricsAdminServlet
+                = servletContext.addServlet("metricsServlet", new MetricsServlet());
 
         metricsAdminServlet.addMapping("/metrics/metrics/*");
         metricsAdminServlet.setAsyncSupported(true);
