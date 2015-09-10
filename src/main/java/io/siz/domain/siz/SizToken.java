@@ -7,14 +7,24 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Transient;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * A persistent token.
  */
 @Document(collection = "tokens")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SizToken extends AbstractAuditingEntity implements Serializable {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class SizToken extends AbstractAuditingEntity implements Serializable, UserDetails {
 
     @Id
     private String id;
@@ -32,35 +42,57 @@ public class SizToken extends AbstractAuditingEntity implements Serializable {
         return "href/" + id;
     }
 
-    public String getId() {
+    final Set<SimpleGrantedAuthority> singleton = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+
+    @Override
+    @Transient
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        /**
+         * Les tokens ne donnent droit qu'au niveau d'authorité USER.
+         */
+        return singleton;
+    }
+
+    @Override
+    @Transient
+    @JsonIgnore
+    public String getPassword() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    @Transient
+    @JsonIgnore
+    public String getUsername() {
+        return id;
     }
 
-    public String getViewerProfileId() {
-        return viewerProfileId;
+    @Override
+    @Transient
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setViewerProfileId(String viewerProfileId) {
-        this.viewerProfileId = viewerProfileId;
+    @Override
+    @Transient
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public String getUserId() {
-        return userId;
+    @Override
+    @Transient
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getStoryIdToShow() {
-        return storyIdToShow;
-    }
-
-    public void setStoryIdToShow(String storyIdToShow) {
-        this.storyIdToShow = storyIdToShow;
+    @Override
+    @Transient
+    @JsonIgnore
+    public boolean isEnabled() {
+        return true;
     }
 }

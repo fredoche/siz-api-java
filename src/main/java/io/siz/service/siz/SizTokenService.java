@@ -1,10 +1,13 @@
-package io.siz.security.siz;
+package io.siz.service.siz;
 
 import io.siz.domain.siz.SizToken;
 import io.siz.repository.siz.SizTokenRepository;
+import io.siz.web.rest.dto.siz.SizUserDTO;
 import java.security.SecureRandom;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,5 +31,5 @@ public class SizTokenService {
         sizTokenRepository.insert(token);
         return token;
     }
-
+    
 }

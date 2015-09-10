@@ -14,6 +14,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.GenericFilterBean;
 
+/**
+ * Notre filtre maison qui se charge de positionner un User dans le contexte de
+ * sécurité.
+ *
+ * @author fred
+ */
 public class SizAuthTokenFilter extends GenericFilterBean {
 
     private final Logger log = LoggerFactory.getLogger(SizAuthTokenFilter.class);
@@ -47,7 +53,7 @@ public class SizAuthTokenFilter extends GenericFilterBean {
 
             }
         } catch (Exception ex) {
-//            throw new RuntimeException(ex);
+            log.info("Could not log with siz credentials.", ex.getMessage());
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
