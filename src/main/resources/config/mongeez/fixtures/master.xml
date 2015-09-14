@@ -1,4 +1,5 @@
 <changeFiles>
     <file path="stories.xml"/>
+    <file path="users.xml"/>
     <file path="viewerprofiles.xml"/>
 </changeFiles>
