@@ -42,7 +42,7 @@ public class SizToken extends AbstractAuditingEntity implements Serializable, Us
         return "href/" + id;
     }
 
-    final Set<SimpleGrantedAuthority> singleton = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+    private final Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
 
     @Override
     @Transient
@@ -51,7 +51,7 @@ public class SizToken extends AbstractAuditingEntity implements Serializable, Us
         /**
          * Les tokens ne donnent droit qu'au niveau d'authorité USER.
          */
-        return singleton;
+        return authorities;
     }
 
     @Override

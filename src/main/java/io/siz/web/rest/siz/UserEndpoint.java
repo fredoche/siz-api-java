@@ -1,6 +1,7 @@
 package io.siz.web.rest.siz;
 
 import com.codahale.metrics.annotation.Timed;
+import io.siz.domain.siz.SizToken;
 import io.siz.domain.siz.SizUser;
 import io.siz.exception.SizException;
 import io.siz.repository.siz.SizTokenRepository;
@@ -30,7 +31,7 @@ public class UserEndpoint {
 
     @Inject
     private SizUserService sizUserService;
-    
+
     @Inject
     private SizTokenRepository sizTokenRepository;
 
@@ -58,12 +59,7 @@ public class UserEndpoint {
     @Timed
     @PreAuthorize("hasRole('ROLE_USER')")
     public SizUser get(@PathVariable String userId) {
-        
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final String tokenString = ((User) authentication.getPrincipal()).getUsername();
-        
-        sizTokenRepository.findById(tokenString);
-        
-        return sizUserService.getUser(userId);
+        SizToken token = (SizToken) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return sizUserService.getUser(token.getUserId());
     }
 }

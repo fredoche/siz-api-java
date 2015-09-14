@@ -81,7 +81,7 @@ public class SizUserService {
     /**
      * Le Principal est positionné là dans le
      * {@link io.siz.security.siz.SizAuthTokenFilter} et il s'agit d'un
-     * {@link org.springframework.security.core.userdetails.User}
+     * {@link io.siz.domain.siz.SizToken}
      *
      * principal.username est le tokenString
      *
@@ -101,7 +101,7 @@ public class SizUserService {
         } else if (!isEmpty(dto.getUsername()) && !isEmpty(dto.getPassword())) {
             r = () -> sizUserRepository.findByUsername(dto.getUsername());
         } else if (!isEmpty(dto.getFacebookToken())) {
-            r = () -> sizUserRepository.findFacebookUserId(dto.getFacebookToken());
+            r = () -> sizUserRepository.findByFacebookUserId(dto.getFacebookToken());
         } else {
             throw new SizException();
         }

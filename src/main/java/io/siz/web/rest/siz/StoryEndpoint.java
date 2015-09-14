@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author fred
  */
 @RestController
-@RequestMapping("/stories")
 public class StoryEndpoint {
 
     @Inject
@@ -31,7 +30,7 @@ public class StoryEndpoint {
 
     @Timed
     @RequestMapping(
-            value = "/{storyId}",
+            value = "/stories/{storyId}",
             method = RequestMethod.GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public StoryOutWrapperDTO getById(@PathVariable String storyId) throws SizException {
@@ -43,7 +42,9 @@ public class StoryEndpoint {
     }
 
     @Timed
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(
+            value = "/stories",
+            method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_USER')")
     public StoryOutWrapperDTO createStory(@RequestBody StoryInWrapperDTO wrapper) throws SizException {
         return wrapper.getStories().stream()

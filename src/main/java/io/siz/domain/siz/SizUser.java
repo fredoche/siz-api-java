@@ -24,15 +24,15 @@ public class SizUser extends AbstractAuditingEntity implements Serializable {
 
     @Id
     private String id;
-    @Indexed(unique = true)
+    @Indexed(unique = true, sparse = true)
     @Email
     @Size(min = 5, max = 100)
     private String email;
     private String passwordHash;
     private String facebookToken;
-    @Indexed(unique = true)
+    @Indexed(unique = true, sparse = true)
     private String facebookUserId;
-    @Indexed(unique = true)
+    @Indexed(unique = true, sparse = true)
     private String username;
     private Date creationDate = DateTime.now().toDate();
     private String state;

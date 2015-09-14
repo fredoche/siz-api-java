@@ -33,7 +33,7 @@ public class TopLevelDto {
     
 
     private Map<String, String> links;
-    private List<EmailDTO> emails;
+    private List<IdAndStateDTO> emails;
     private List<UsernameDTO> usernames;
     private SizUser user;
     private SizToken token;

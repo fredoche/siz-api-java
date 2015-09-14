@@ -7,9 +7,9 @@ import lombok.Data;
  * @author fred
  */
 @Data
-public class EmailDTO {
+public class IdAndStateDTO {
 
-    private String id;
-    private String state;
+    private final String id;
+    private final String state;
 
 }

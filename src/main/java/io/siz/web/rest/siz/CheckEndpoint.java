@@ -1,18 +1,16 @@
 package io.siz.web.rest.siz;
 
 import com.codahale.metrics.annotation.Timed;
-import io.siz.domain.siz.Event;
-import io.siz.domain.siz.Story;
-import io.siz.exception.SizException;
-import io.siz.repository.siz.StoryRepository;
-import io.siz.service.siz.EventService;
-import io.siz.web.rest.dto.siz.EventWrapperDTO;
-import java.util.Optional;
+import com.google.common.collect.Maps;
+import io.siz.repository.siz.SizUserRepository;
+import io.siz.web.rest.dto.siz.IdAndStateDTO;
+import io.siz.web.rest.dto.siz.SizErrorDTO;
+import io.siz.web.rest.dto.siz.TopLevelDto;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,28 +24,37 @@ import org.springframework.web.bind.annotation.RestController;
 public class CheckEndpoint {
 
     @Inject
-    private StoryRepository storyDao;
-
-    @Inject
-    private EventService eventService;
+    private SizUserRepository sizUserRepository;
 
     @RequestMapping(value = "/emails/{email}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @PreAuthorize("hasRole('ROLE_USER')")
-    public EventWrapperDTO create(@RequestParam String email) {
-        final Event event = submittedEventDto.getEvent();
-        final Optional<Story> s = Optional.ofNullable(storyDao.findOne(event.getStoryId()));
-        return s.map(story -> {
-            eventService.create(
-                    event,
-                    story,
-                    request.getRemoteAddr());
-            event.setStoryId(story.getId());
-            final EventWrapperDTO eventWrapperDTO = new EventWrapperDTO(event);
-            return eventWrapperDTO;
-        })
-                .orElseThrow(() -> new SizException());
+    public ResponseEntity findByEmail(@RequestParam String email) {
+        return sizUserRepository
+                .findByEmail(email)
+                .map(user
+                        -> new ResponseEntity(
+                                Maps.immutableEntry("emails",
+                                        new IdAndStateDTO(user.getEmail(), "registered")), HttpStatus.OK))
+                .orElse(new ResponseEntity(
+                                new TopLevelDto(new SizErrorDTO(null, "Email not found", null)), HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/usernames/{property}",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity findByUsername(@RequestParam String username) {
+        return sizUserRepository
+                .findByUsername(username)
+                .map(user
+                        -> new ResponseEntity(
+                                Maps.immutableEntry("usernames",
+                                        new IdAndStateDTO(user.getUsername(), "registered")), HttpStatus.OK))
+                .orElse(new ResponseEntity(
+                                new TopLevelDto(new SizErrorDTO(null, "Username not found", null)), HttpStatus.NOT_FOUND));
     }
 }

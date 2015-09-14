@@ -35,7 +35,7 @@ public class TokenEndpoint {
     private SizUserService sizUserService;
 
     @Inject
-    private MessageSource $;
+    private MessageSource messageSource;
 
     @RequestMapping(value = "/tokens",
             method = RequestMethod.POST,
@@ -78,7 +78,7 @@ public class TokenEndpoint {
                 )
                 // on alors on laisse l'exception aller dans le ExceptionTranslator
                 .orElseGet(() -> new TopLevelDto(new SizErrorDTO(
-                                        $.getMessage(
+                                        messageSource.getMessage(
                                                 "token.invalid.login",
                                                 new Object[]{unusedString},
                                                 "invalid login",

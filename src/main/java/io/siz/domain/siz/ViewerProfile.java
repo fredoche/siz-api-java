@@ -8,7 +8,6 @@ import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -31,12 +30,10 @@ public class ViewerProfile extends AbstractAuditingEntity implements Serializabl
     private String id;
 
     @Field(value = "likeStoryIds")
-    @DBRef
-    private List<Story> likedStories;
+    private List<String> likedStories;
 
     @Field(value = "nopeStoryIds")
-    @DBRef
-    private List<Story> nopeStoryIds;
+    private List<String> nopeStoryIds;
 
     private Map<String, Integer> tagsWeights;
 

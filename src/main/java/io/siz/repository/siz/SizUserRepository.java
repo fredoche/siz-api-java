@@ -12,8 +12,8 @@ public interface SizUserRepository extends SecureMongoRepository<SizUser, String
 
     public Optional<SizUser> findByUsername(String username);
 
-    public Optional<SizUser> findByEmail(String username);
+    public Optional<SizUser> findByEmail(String email);
 
-    public Optional<SizUser> findFacebookUserId(String facebookUserId);
+    public Optional<SizUser> findByFacebookUserId(String facebookUserId);
 
 }
