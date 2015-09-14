@@ -41,7 +41,7 @@ public class IndexEndpoint implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
-    @RequestMapping(value = "/index",
+    @RequestMapping(value = "/operations",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Map<String, String>> index(HttpServletRequest request) {
