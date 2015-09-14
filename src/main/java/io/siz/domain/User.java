@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -24,7 +23,7 @@ import org.joda.time.DateTime;
 /**
  * A user.
  */
-@Document(collection = "users")
+@Document(collection = "JHI_USER")
 public class User extends AbstractAuditingEntity implements Serializable {
 
     @Id

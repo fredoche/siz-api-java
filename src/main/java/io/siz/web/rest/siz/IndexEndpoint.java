@@ -37,7 +37,7 @@ public class IndexEndpoint implements ApplicationContextAware {
     /**
      * la regex \{\[(.*)\]\} matche [ {[/events]} , /events ] dans {[/events]}
      */
-    Pattern route = Pattern.compile("\\[(.*?)\\]");
+    private Pattern route = Pattern.compile("\\[(.*?)\\]");
 
     private ApplicationContext applicationContext;
 
@@ -48,38 +48,43 @@ public class IndexEndpoint implements ApplicationContextAware {
 
         Map<String, Map<String, String>> newHashMap = Maps.<String, Map<String, String>>newHashMap();
 
-        newHashMap.put("links", extractMethodMappings(applicationContext).entrySet().stream().collect(
-                Collectors.toMap(entry
+        newHashMap.put("links", extractMethodMappings(applicationContext)
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(entry
+                                -> {
+                            Matcher m = route.matcher(entry.getKey());
+                            m.find();
+                            final String controllerName = m.group(1).replaceAll("/", "");
+                            /**
+                             * on change {[/foo]} en foo , et si c'est la
+                             * racine, c-a-d "/" -> "")on indique home plutot
+                             * que string vide.
+                             */
+                            return !"".equals(controllerName) ? controllerName : "home";
+                        },
+                        entry
                         -> {
-                    Matcher m = route.matcher(entry.getKey());
-                    m.find();
-                    final String controllerName = m.group(1).replaceAll("/", "");
-                    /**
-                     * on change {[/foo]} en foo , et si c'est la racine, c-a-d
-                     * "/" -> "")on indique home plutot que string vide.
-                     */
-                    return !"".equals(controllerName) ? controllerName : "home";
-                },
-                entry
-                -> {
-                    Matcher m = route.matcher(entry.getKey());
-                    m.find();
-                    return "//" + request.getLocalName() + m.group(1);
-                },
-                (t, u) -> {
-                    // s'il y a plusieurs fois la meme clé, on ignore la seconde.
-                    // SI on veut plus de détails, il faut utiliser la route /mappings
-                    return t;
-                })
-        ));
+                            Matcher m = route.matcher(entry.getKey());
+                            m.find();
+                            return "//" + request.getLocalName() + m.group(1);
+                        },
+                        (t, u) -> {
+                            // s'il y a plusieurs fois la meme clé, on ignore la seconde.
+                            // SI on veut plus de détails, il faut utiliser la route /mappings
+                            return t;
+                        })
+                ));
 
         return newHashMap;
     }
 
     /**
      * Méthode issue de {@link RequestMappingEndpoint}
+     *
      * @param applicationContext
-     * @return 
+     * @return
      */
     protected Map<String, Object> extractMethodMappings(ApplicationContext applicationContext) {
         Map<String, Object> result = new HashMap<>();

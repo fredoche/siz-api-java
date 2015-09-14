@@ -4,7 +4,7 @@ package io.siz.exception;
  *
  * @author fred
  */
-public class SizException extends Exception {
+public class SizException extends RuntimeException {
 
     public SizException() {
     }

@@ -8,10 +8,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.cache.support.NoOpCacheManager; 
 
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
+import org.springframework.cache.guava.GuavaCacheManager;
 
 @Configuration
 @EnableCaching
@@ -30,8 +29,8 @@ public class CacheConfiguration {
 
     @Bean
     public CacheManager cacheManager() {
-        log.debug("No cache");
-        cacheManager = new NoOpCacheManager();
+        log.debug("Guava cache manager");
+        cacheManager = new GuavaCacheManager();
         return cacheManager;
     }
 }

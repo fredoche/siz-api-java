@@ -3,17 +3,12 @@ package io.siz.service.siz;
 import com.mongodb.WriteResult;
 import io.siz.domain.siz.Event;
 import io.siz.domain.siz.Story;
-import io.siz.domain.siz.SizToken;
 import io.siz.repository.siz.EventRepository;
 import io.siz.repository.siz.ViewerProfileRepository;
 import io.siz.security.SecurityUtils;
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**

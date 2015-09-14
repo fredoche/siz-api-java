@@ -12,6 +12,8 @@ spring:
     data:
         mongodb:
             database: siz
+        rest:
+            baseUri: api
 
 async:
     corePoolSize: 2

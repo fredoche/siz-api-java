@@ -52,7 +52,7 @@ public class XAuthTokenFilter extends GenericFilterBean {
                 }
             }
         } catch (Exception ex) {
-//            throw new RuntimeException(ex);
+            log.info("Could not log with xauth credentials.", ex.getMessage());
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
