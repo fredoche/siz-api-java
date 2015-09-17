@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
  * @author fred
  */
 @Service
-public class EventService {
+public class SizEventService {
 
-    private final Logger log = LoggerFactory.getLogger(EventService.class);
+    private final Logger log = LoggerFactory.getLogger(SizEventService.class);
 
     @Inject
     private EventRepository eventRepository;
@@ -26,20 +26,19 @@ public class EventService {
     @Inject
     private ViewerProfileRepository viewerProfileRepository;
 
-    public Event create(Event event, Story story, String remoteAddr) {
-        event.getViewerProfile().setId(SecurityUtils.getCurrentLogin());
+    /**
+     * Créé un évènement. Au passage, créé le viewerprofile implicitement
+     * associé au token.
+     */
+    public Event create(Event event) {
+        /**
+         * si on a updaté zero profil, c'est qu'un user nouveau vient de liker
+         * et qu'il faut lui créer un nouveau viewerprofile. L'id du
+         * viewerprofile est égal à celui du token.
+         */
+        event.setViewerProfileId(SecurityUtils.getCurrentLogin());
         WriteResult updateFromEvent = viewerProfileRepository.updateFromEvent(event);
         if (updateFromEvent.getN() != 1) {
-            /**
-             * si on a updaté zero profil, c'est qu'un user nouveau vient de
-             * liker et qu'il faut lui créer un nouveau viewerprofile.
-             */
-
-//            SecurityContextHolder.getContext().getAuthentication();
-            // equivalent de Event(newEvent.storyId, newEvent._type, tags, viewerProfileId, BSONObjectID.generate.stringify, ip = ip)
-            event.setIp(remoteAddr);
-
-//            event.setViewerProfile(((Token) authentication).getViewerProfileId());
             return eventRepository.insert(event);
         } else {
             /**

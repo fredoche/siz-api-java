@@ -24,7 +24,6 @@ public class ViewerProfileRepositoryImpl implements ViewerProfileRepositoryCusto
 
     @Override
     public WriteResult updateFromEvent(Event e) {
-        final String storyId = e.getStoryId();
         /**
          * query
          * Json.obj(
@@ -43,9 +42,10 @@ public class ViewerProfileRepositoryImpl implements ViewerProfileRepositoryCusto
         )
       )
          */
+        final String storyId = e.getStoryId();
 
         final Query query = new Query(
-                where("id").is(e.getViewerProfile().getId())
+                where("id").is(e.getViewerProfileId())
                 .and("LikeStoryIds").nin(storyId)
                 .and("NopeStoryIds").nin(storyId)
         );
@@ -71,7 +71,7 @@ public class ViewerProfileRepositoryImpl implements ViewerProfileRepositoryCusto
                 .addToSet(arrayToAddTo, storyId)
                 .pull(arrayToRemoveFrom, storyId);
 
-        Optional.ofNullable(e.getTags()).map(tags
+        Optional.ofNullable(e.getTags()).ifPresent(tags
                 -> tags.stream().map(tag
                         -> update.inc("tagsWeights." + tag, e.getType().getTagsWeights())
                 )

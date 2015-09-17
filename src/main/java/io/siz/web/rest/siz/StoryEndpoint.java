@@ -1,21 +1,33 @@
 package io.siz.web.rest.siz;
 
 import com.codahale.metrics.annotation.Timed;
+import io.siz.domain.siz.SizToken;
 import io.siz.domain.siz.Story;
 import io.siz.domain.siz.story.Box;
 import io.siz.exception.SizException;
 import io.siz.repository.siz.StoryRepository;
+import io.siz.repository.siz.ViewerProfileRepository;
+import io.siz.service.siz.SizStoryService;
+import io.siz.service.siz.SizTokenService;
+import io.siz.service.siz.ViewerProfileService;
+import io.siz.web.rest.dto.siz.SizErrorDTO;
+import io.siz.web.rest.dto.siz.StoryFilterBy;
 import io.siz.web.rest.dto.siz.StoryInWrapperDTO;
 import io.siz.web.rest.dto.siz.StoryOutWrapperDTO;
+import io.siz.web.rest.dto.siz.TopLevelDto;
+import io.siz.web.rest.dto.siz.converters.StoryFilterByEnumConverter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,6 +40,23 @@ public class StoryEndpoint {
     @Inject
     private StoryRepository storyRepository;
 
+    @Inject
+    private SizStoryService storyService;
+
+    @Inject
+    private ViewerProfileService viewerProfileService;
+
+    @Inject
+    private ViewerProfileRepository viewerProfileRepository;
+
+    @Inject
+    private SizTokenService sizTokenService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(StoryFilterBy.class, new StoryFilterByEnumConverter());
+    }
+
     @Timed
     @RequestMapping(
             value = "/stories/{storyId}",
@@ -38,7 +67,87 @@ public class StoryEndpoint {
         return s.map(story -> {
             return new StoryOutWrapperDTO(story);
         })
-                .orElseThrow(() -> new SizException());
+                .orElseThrow(SizException::new);
+    }
+
+    /**
+     *
+     * @param limit
+     * @param orderBy
+     * @param filterBy
+     * @param slug
+     * @param sinceId
+     * @param lastSkippedId
+     * @return
+     */
+    @Timed
+    @RequestMapping(
+            value = "/stories",
+            method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public TopLevelDto getStories(
+            @RequestParam(defaultValue = "12") Integer limit,
+            @RequestParam(defaultValue = "creationDate") String orderBy,
+            @RequestParam(defaultValue = "recommends") StoryFilterBy filterBy,
+            @RequestParam Optional<String> slug,
+            @RequestParam Optional<String> sinceId,
+            @RequestParam Optional<String> lastSkippedId) {
+
+        if (slug.isPresent()) {
+            return slug
+                    .flatMap(storyService::getBySlug)
+                    .map(TopLevelDto::new)
+                    .orElse(new TopLevelDto(new SizErrorDTO("slug pas trouvé")));
+        } else {
+            SizToken token = sizTokenService.getCurrentToken();
+
+            return viewerProfileRepository
+                    .findById(token.getViewerProfileId())
+                    .map(profile -> {
+                        switch (filterBy) {
+                            default:
+                            case RECOMMENDS:
+                                return new TopLevelDto(
+                                        viewerProfileService.findRecommends(token, profile, orderBy)
+                                        .limit(limit)
+                                        .collect(Collectors.toList()));
+                            case LIKES:
+                                /**
+                                 * renvoie les stories aimées présentes dans le
+                                 * profil du visiteur. On conserve la façon
+                                 * moisie de faire la pagination de l'ancienne
+                                 * api, mais en moins déglingué quand même.
+                                 */
+                                return new TopLevelDto(
+                                        viewerProfileService.findLikes(profile)
+                                        .filter(s -> {
+                                            /**
+                                             * on GARDE les ids entre since et
+                                             * last: donc le predicat est true
+                                             * si s.date est apres since et
+                                             * avant last.
+                                             * a,b,c,sinceId],d,e,f[,lastSkipId,g,h,i
+                                             */
+                                            return sinceId
+                                            .map(storyRepository::findOne)
+                                            .map(Story::getCreationDate)
+                                            .map(
+                                                    date -> s.getCreationDate().after(date))
+                                            .orElse(true)
+                                            && lastSkippedId
+                                            .map(storyRepository::findOne)
+                                            .map(Story::getCreationDate)
+                                            .map(
+                                                    date -> s.getCreationDate().before(date))
+                                            .orElse(true);
+
+                                        })
+                                        .limit(limit)
+                                        .collect(Collectors.toList()));
+                        }
+                    })
+                    .orElse(new TopLevelDto(new SizErrorDTO("viewerprofile pas trouvé")));
+        }
     }
 
     @Timed

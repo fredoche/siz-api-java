@@ -26,11 +26,18 @@ public class TopLevelDto {
     public TopLevelDto(SizToken token) {
         this.token = token;
     }
-    
+
+    public TopLevelDto(List<Story> stories) {
+        this.stories = stories;
+    }
+
     public TopLevelDto(SizErrorDTO error) {
         this.errors = Collections.singletonList(error);
     }
-    
+
+    public TopLevelDto(Story story) {
+        this.stories = Collections.singletonList(story);
+    }
 
     private Map<String, String> links;
     private List<IdAndStateDTO> emails;

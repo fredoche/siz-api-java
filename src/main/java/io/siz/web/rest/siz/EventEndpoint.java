@@ -5,7 +5,7 @@ import io.siz.domain.siz.Event;
 import io.siz.domain.siz.Story;
 import io.siz.exception.SizException;
 import io.siz.repository.siz.StoryRepository;
-import io.siz.service.siz.EventService;
+import io.siz.service.siz.SizEventService;
 import io.siz.web.rest.dto.siz.EventWrapperDTO;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ public class EventEndpoint {
     private StoryRepository storyDao;
 
     @Inject
-    private EventService eventService;
+    private SizEventService eventService;
 
     @RequestMapping(value = "/events",
             method = RequestMethod.POST,

@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -39,13 +38,12 @@ public class Event extends AbstractAuditingEntity implements Serializable {
     private List<String> tags;
     /**
      * An event of a non-registered user is associated to an abstract
-     * viewerprofile, which is a document-id without any actual document in then
+     * viewerprofile, which is a document-id without any actual document in the
      * viewerprofile collection.
      */
     @Field("viewerProfileId")
-    @DBRef
     @JsonIgnore
-    private ViewerProfile viewerProfile = new ViewerProfile();
+    private String viewerProfileId;
 
     private Date date = DateTime.now().toDate();
 
