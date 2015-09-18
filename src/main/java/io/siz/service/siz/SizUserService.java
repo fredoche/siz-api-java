@@ -33,21 +33,24 @@ public class SizUserService {
     @Inject
     private SizTokenRepository sizTokenRepository;
     @Inject
+    private SizTokenService sizTokenService;
+    @Inject
     private PasswordEncoder passwordEncoder;
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Optional<SizUser> create(SizUserDTO userDTO, String tokenString) {
+    public SizUser create(SizUserDTO userDTO) {
         // 1 on récupère le token complet du type.
-        SizToken token = sizTokenRepository.findById(tokenString).get();
+        SizToken token = sizTokenService.getCurrentToken();
         // 2 on regarde si ce token est déja accroché à un user
         if (!isEmpty(token.getUserId())) {
-            log.error("A user already exist with this token");
-            throw new SizException();
+            final String m = "A user is already connected with this token";
+            log.error(m);
+            throw new SizException(m);
         } else {
             SizUser user = new SizUser();
 
-            user.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
             user.setUsername(userDTO.getUsername());
+            user.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
             user.setFacebookToken(userDTO.getFacebookToken());
             user.setCreationDate(new Date());
             // create by email
@@ -60,7 +63,7 @@ public class SizUserService {
                  */
                 user.setEmail(template.userOperations().getUserProfile().getEmail());
                 /**
-                 * mais on vuet surtout garder son facebookUserId.
+                 * mais on veut surtout garder son facebookUserId.
                  */
                 user.setFacebookUserId(user.getFacebookUserId());
             }
@@ -68,19 +71,18 @@ public class SizUserService {
             try {
                 user = sizUserRepository.insert(user);
                 token.setUserId(user.getId());
+                sizTokenRepository.save(token);
+                return user;
 
             } catch (Exception e) {
                 log.error("exception caught : {}", e.getMessage());
                 throw e;
             }
-
         }
-        return Optional.empty();
     }
 
     /**
-     * Le Principal est positionné là dans le
-     * {@link io.siz.security.siz.SizAuthTokenFilter} et il s'agit d'un
+     * Le Principal est positionné là dans le {@link io.siz.security.siz.SizAuthTokenFilter} et il s'agit d'un
      * {@link io.siz.domain.siz.SizToken}
      *
      * principal.username est le tokenString

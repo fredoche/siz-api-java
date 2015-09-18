@@ -49,7 +49,7 @@ public class SizEventService {
 
         WriteResult updateFromEvent = viewerProfileRepository.updateFromEvent(event);
         if (updateFromEvent.getN() != 1) {
-            throw new SizException("unable to update profile");
+            throw new SizException("story already liked or noped");
         }
         return eventRepository.insert(event);
     }

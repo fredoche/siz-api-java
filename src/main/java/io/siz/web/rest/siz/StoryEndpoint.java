@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
@@ -122,40 +123,42 @@ public class StoryEndpoint {
 
             };
 
-            return viewerProfileRepository.findById(token.getViewerProfileId())
+            Stream<Story> stories = viewerProfileRepository.findById(token.getViewerProfileId())
                     .map(profile -> {
                         switch (filterBy) {
                             default:
                             case RECOMMENDS:
-                                return new TopLevelDto(
-                                        viewerProfileService.findRecommends(token, profile, orderBy)
-                                        .distinct()
-                                        .limit(limit)
-                                        .collect(Collectors.toList()));
+                                return viewerProfileService.findRecommends(token, profile, orderBy);
                             case LIKES:
 
                                 /**
                                  * renvoie les stories aimées présentes dans le profil du visiteur. On conserve la façon
                                  * moisie de faire la pagination de l'ancienne api, mais en moins déglingué quand même.
                                  */
-                                return new TopLevelDto(
-                                        viewerProfileService.findLikes(profile)
-                                        .filter(storyBetweenPredicate)
-                                        .distinct()
-                                        .limit(limit)
-                                        .collect(Collectors.toList()));
+                                return viewerProfileService.findLikes(profile)
+                                .filter(storyBetweenPredicate);
                         }
                     })
-                    /**
-                     * Si le mec a pas de profil on lui envoie des histoire recommandées.
-                     */
                     .orElseGet(() -> {
-                        return new TopLevelDto(
-                                viewerProfileService.findRecommends(token, orderBy)
-                                .distinct()
-                                .limit(limit)
-                                .collect(Collectors.toList()));
+                        switch (filterBy) {
+                            /**
+                             * Si le mec a pas de profil on lui envoie des histoire recommandées.
+                             */
+                            default:
+                            case RECOMMENDS:
+                                return viewerProfileService.findRecommends(token, orderBy);
+                            case LIKES:
+                                /**
+                                 * le mec a pas de profil mais demande ses likes. C'est vide pour le moment.
+                                 */
+                                return Stream.empty();
+                        }
                     });
+            return new TopLevelDto(
+                    stories
+                    .distinct()
+                    .limit(limit)
+                    .collect(Collectors.toList()));
         }
     }
 

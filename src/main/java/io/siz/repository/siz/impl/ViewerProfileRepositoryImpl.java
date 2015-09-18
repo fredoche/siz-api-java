@@ -46,10 +46,10 @@ public class ViewerProfileRepositoryImpl implements ViewerProfileRepositoryCusto
 
         final Query query = new Query(
                 where("id").is(e.getViewerProfileId())
-                .and("LikeStoryIds").nin(storyId)
-                .and("NopeStoryIds").nin(storyId)
+                .and("likeStoryIds").nin(storyId)
+                .and("nopeStoryIds").nin(storyId)
         );
-
+        
         /**
          * update
          *  val updateQuery = if (event.tags.isEmpty) {
@@ -65,8 +65,8 @@ public class ViewerProfileRepositoryImpl implements ViewerProfileRepositoryCusto
       )
     }
          */
-        String arrayToAddTo = e.getType() + "StoryIds";
-        String arrayToRemoveFrom = e.getType() == EventType.NOPE ? "LikeStoryIds" : "NopeStoryIds";
+        String arrayToAddTo = e.getType() == EventType.LIKE ? "likeStoryIds" : "nopeStoryIds";
+        String arrayToRemoveFrom = e.getType() == EventType.NOPE ? "likeStoryIds" : "nopeStoryIds";
         final Update update = new Update()
                 .addToSet(arrayToAddTo, storyId)
                 .pull(arrayToRemoveFrom, storyId);

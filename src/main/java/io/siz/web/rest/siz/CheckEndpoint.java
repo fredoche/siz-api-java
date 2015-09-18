@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,12 +27,19 @@ public class CheckEndpoint {
     @Inject
     private SizUserRepository sizUserRepository;
 
-    @RequestMapping(value = "/emails/{email}",
-            method = RequestMethod.POST,
+    /**
+     * on doit pouvoir récupérer un user par email. La route est protégée pour éviter un brute force de tous les emails
+     * possibles et ne fonctionne que si on demande son propre user ou si on est admin.
+     *
+     * @param email
+     * @return
+     */
+    @RequestMapping(value = "/emails/{email:.*}",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity findByEmail(@RequestParam String email) {
+    public ResponseEntity findByEmail(@PathVariable String email) {
         return sizUserRepository
                 .findByEmail(email)
                 .map(user
@@ -43,7 +51,7 @@ public class CheckEndpoint {
     }
 
     @RequestMapping(value = "/usernames/{property}",
-            method = RequestMethod.POST,
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @PreAuthorize("hasRole('ROLE_USER')")

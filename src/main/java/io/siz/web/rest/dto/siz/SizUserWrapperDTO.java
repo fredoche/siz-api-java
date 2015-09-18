@@ -1,6 +1,7 @@
 package io.siz.web.rest.dto.siz;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Optional;
 import lombok.Data;
 
 /**
@@ -10,6 +11,6 @@ import lombok.Data;
 @Data
 public class SizUserWrapperDTO {
 
-    private List<SizUserDTO> users;
-
+    @JsonProperty("users") // keep typo because its used in the interface.
+    private Optional<SizUserDTO> user;
 }

@@ -47,12 +47,10 @@ public class TokenEndpoint {
     }
 
     /**
-     * enregistre un login associé à un token. Un seul login par token est
-     * autorisé. Si le token est déja associé à un user on renvoie une erreur de
-     * sécurité.
+     * enregistre un login associé à un token. Un seul login par token est autorisé. Si le token est déja associé à un
+     * user on renvoie une erreur de sécurité.
      *
-     * @param unusedString est pas utilisé mais on le pose là pour le matching
-     * d'url.
+     * @param unusedString est pas utilisé mais on le pose là pour le matching d'url.
      * @param wrapper
      * @return
      */
@@ -63,11 +61,10 @@ public class TokenEndpoint {
     /**
      * cette clause spécifie que le token n'est pas déja associé à un user.
      */
-//    @PreAuthorize("principal.userId == null")
+    @PreAuthorize("hasRole('ROLE_USER') and principal.userId == null")
     public TopLevelDto login(@PathVariable String unusedString, @RequestBody SizUserWrapperDTO wrapper) {
         Locale locale = LocaleContextHolder.getLocale();
-        return wrapper.getUsers().stream()
-                .findFirst()
+        return wrapper.getUser()
                 .flatMap(sizUserService::loginUser)
                 .map(user -> {
                     TopLevelDto dto = new TopLevelDto();

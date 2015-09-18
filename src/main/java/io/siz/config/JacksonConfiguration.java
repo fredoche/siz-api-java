@@ -23,4 +23,9 @@ public class JacksonConfiguration {
         module.addDeserializer(LocalDate.class, new ISO8601LocalDateDeserializer());
         return module;
     }
+
+//    public Jdk8Module jacksonJdk8Module() {
+//        Jdk8Module module = new Jdk8Module();
+//        return module;
+//    }
 }

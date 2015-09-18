@@ -1,20 +1,16 @@
 package io.siz.web.rest.siz;
 
 import com.codahale.metrics.annotation.Timed;
-import io.siz.domain.siz.SizToken;
 import io.siz.domain.siz.SizUser;
-import io.siz.exception.SizException;
-import io.siz.repository.siz.SizTokenRepository;
+import io.siz.service.siz.SizTokenService;
 import io.siz.service.siz.SizUserService;
+import io.siz.web.rest.dto.siz.SizErrorDTO;
 import io.siz.web.rest.dto.siz.SizUserWrapperDTO;
 import io.siz.web.rest.dto.siz.TopLevelDto;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,25 +29,30 @@ public class UserEndpoint {
     private SizUserService sizUserService;
 
     @Inject
-    private SizTokenRepository sizTokenRepository;
+    private SizTokenService sizTokenService;
 
     @RequestMapping(
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @PreAuthorize("hasRole('ROLE_USER')")
-    public TopLevelDto create(@RequestBody SizUserWrapperDTO wrapper, HttpServletRequest request) throws SizException {
-        return wrapper.getUsers().stream()
-                .findFirst()
+    public TopLevelDto create(@RequestBody SizUserWrapperDTO wrapper, HttpServletRequest request) {
+        return wrapper.getUser()
                 .map(userDTO -> {
-                    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                    return sizUserService.create(userDTO, ((User) authentication.getPrincipal()).getUsername())
-                    .map(TopLevelDto::new);
-                })
-                .orElseThrow(SizException::new)
-                .get();
+                    final SizUser newUser = sizUserService.create(userDTO);
+                    return new TopLevelDto(
+                            sizTokenService.getCurrentToken(),
+                            newUser);
+                }).orElse(new TopLevelDto(new SizErrorDTO("provide a user")));
     }
 
+    /**
+     * recupere un user par Id en théorie mais UserId est ignoré car pas utile: le User est associé a son token de toute
+     * façon.
+     *
+     * @param userId nécessaire pour matcher l'ancienne api mais pas utilisé
+     * @return
+     */
     @RequestMapping(
             value = "/{userId}",
             method = RequestMethod.GET,
@@ -59,7 +60,6 @@ public class UserEndpoint {
     @Timed
     @PreAuthorize("hasRole('ROLE_USER')")
     public SizUser get(@PathVariable String userId) {
-        SizToken token = (SizToken) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return sizUserService.getUser(token.getUserId());
+        return sizUserService.getUser(sizTokenService.getCurrentToken().getUserId());
     }
 }

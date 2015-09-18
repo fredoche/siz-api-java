@@ -1,5 +1,6 @@
 package io.siz.domain.siz;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.siz.domain.AbstractAuditingEntity;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Email;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,16 +29,33 @@ public class SizUser extends AbstractAuditingEntity implements Serializable {
 
     @Id
     private String id;
+
     @Indexed(unique = true, sparse = true)
     @Email
     @Size(min = 5, max = 100)
     private String email;
-    private String passwordHash;
-    private String facebookToken;
-    @Indexed(unique = true, sparse = true)
-    private String facebookUserId;
+
     @Indexed(unique = true, sparse = true)
     private String username;
+
+    @Transient
+    public String getHref() {
+        return "/users/" + id;
+    }
+
+    @JsonIgnore
+    private String passwordHash;
+
+    @JsonIgnore
+    private String facebookToken;
+
+    @JsonIgnore
+    @Indexed(unique = true, sparse = true)
+    private String facebookUserId;
+
+    @JsonIgnore
     private Date creationDate = DateTime.now().toDate();
+
+    @JsonIgnore
     private String state;
 }

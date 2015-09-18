@@ -19,4 +19,9 @@ public interface ViewerProfileRepository extends SecureMongoRepository<ViewerPro
      */
     @PreAuthorize("#id == null or principal.viewerProfileId == #id or hasRole('ROLE_ADMIN')")
     Optional<ViewerProfile> findById(String id);
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public <S extends ViewerProfile> S insert(S entity);
+
 }

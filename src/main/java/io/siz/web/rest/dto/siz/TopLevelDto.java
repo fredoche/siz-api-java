@@ -29,6 +29,11 @@ public class TopLevelDto {
         this.token = token;
     }
 
+    public TopLevelDto(SizToken token, SizUser user) {
+        this.token = token;
+        this.user = user;
+    }
+
     public TopLevelDto(List<Story> stories) {
         this.stories = stories;
     }
