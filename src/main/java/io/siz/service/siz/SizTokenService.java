@@ -45,7 +45,7 @@ public class SizTokenService {
                 .getRequest()
                 .getRemoteAddr();
 
-        return eventRepository.findByIpAndEventType(remoteAddr, EventType.ANONYMOUS_VIEW)
+        return eventRepository.findByIpAndType(remoteAddr, EventType.ANONYMOUS_VIEW)
                 .map(event -> {
                     log.info("Found a video associated with this ip. Associating the video to the token");
                     token.setStoryIdToShow(event.getStoryId());

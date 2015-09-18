@@ -18,6 +18,7 @@ import io.siz.web.rest.dto.siz.TopLevelDto;
 import io.siz.web.rest.dto.siz.converters.StoryFilterByEnumConverter;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -101,52 +102,60 @@ public class StoryEndpoint {
         } else {
             SizToken token = sizTokenService.getCurrentToken();
 
-            return viewerProfileRepository
-                    .findById(token.getViewerProfileId())
+            /**
+             * on GARDE les ids entre since et last: donc le predicat est true si s.date est apres since et avant last.
+             * a,b,c,sinceId],d,e,f[,lastSkipId,g,h,i
+             */
+            final Predicate<? super Story> storyBetweenPredicate = s -> {
+                return sinceId
+                        .map(storyRepository::findOne)
+                        .map(Story::getCreationDate)
+                        .map(
+                                date -> s.getCreationDate().after(date))
+                        .orElse(true)
+                        && lastSkippedId
+                        .map(storyRepository::findOne)
+                        .map(Story::getCreationDate)
+                        .map(
+                                date -> s.getCreationDate().before(date))
+                        .orElse(true);
+
+            };
+
+            return viewerProfileRepository.findById(token.getViewerProfileId())
                     .map(profile -> {
                         switch (filterBy) {
                             default:
                             case RECOMMENDS:
                                 return new TopLevelDto(
                                         viewerProfileService.findRecommends(token, profile, orderBy)
+                                        .distinct()
                                         .limit(limit)
                                         .collect(Collectors.toList()));
                             case LIKES:
+
                                 /**
-                                 * renvoie les stories aimées présentes dans le
-                                 * profil du visiteur. On conserve la façon
-                                 * moisie de faire la pagination de l'ancienne
-                                 * api, mais en moins déglingué quand même.
+                                 * renvoie les stories aimées présentes dans le profil du visiteur. On conserve la façon
+                                 * moisie de faire la pagination de l'ancienne api, mais en moins déglingué quand même.
                                  */
                                 return new TopLevelDto(
                                         viewerProfileService.findLikes(profile)
-                                        .filter(s -> {
-                                            /**
-                                             * on GARDE les ids entre since et
-                                             * last: donc le predicat est true
-                                             * si s.date est apres since et
-                                             * avant last.
-                                             * a,b,c,sinceId],d,e,f[,lastSkipId,g,h,i
-                                             */
-                                            return sinceId
-                                            .map(storyRepository::findOne)
-                                            .map(Story::getCreationDate)
-                                            .map(
-                                                    date -> s.getCreationDate().after(date))
-                                            .orElse(true)
-                                            && lastSkippedId
-                                            .map(storyRepository::findOne)
-                                            .map(Story::getCreationDate)
-                                            .map(
-                                                    date -> s.getCreationDate().before(date))
-                                            .orElse(true);
-
-                                        })
+                                        .filter(storyBetweenPredicate)
+                                        .distinct()
                                         .limit(limit)
                                         .collect(Collectors.toList()));
                         }
                     })
-                    .orElse(new TopLevelDto(new SizErrorDTO("viewerprofile pas trouvé")));
+                    /**
+                     * Si le mec a pas de profil on lui envoie des histoire recommandées.
+                     */
+                    .orElseGet(() -> {
+                        return new TopLevelDto(
+                                viewerProfileService.findRecommends(token, orderBy)
+                                .distinct()
+                                .limit(limit)
+                                .collect(Collectors.toList()));
+                    });
         }
     }
 
@@ -155,7 +164,7 @@ public class StoryEndpoint {
             value = "/stories",
             method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public StoryOutWrapperDTO createStory(@RequestBody StoryInWrapperDTO wrapper) throws SizException {
+    public StoryOutWrapperDTO createStory(@RequestBody StoryInWrapperDTO wrapper) {
         return wrapper.getStories().stream()
                 .map(storyDto -> {
                     final Story story = new Story();

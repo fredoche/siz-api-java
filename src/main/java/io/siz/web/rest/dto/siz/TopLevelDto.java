@@ -1,5 +1,6 @@
 package io.siz.web.rest.dto.siz;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.siz.domain.siz.Event;
 import io.siz.domain.siz.SizToken;
 import io.siz.domain.siz.SizUser;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TopLevelDto {
 
     public TopLevelDto(SizUser user) {

@@ -66,10 +66,7 @@ public class ViewerProfileService {
                  * recommandée par ip:
                  */
                 getPushedStories(token),
-                /**
-                 * puis les recommendations habituelles:
-                 */
-                storyRepository.findAllWhereIdNotInAndTagsContainingNot(
+                storyRepository.findByIdNotInAndTagsNotIn(
                         alreadySeenStories,
                         dislikedTags,
                         new Sort(Sort.Direction.DESC/* correspong à mongo -1 dans l'ancienne api*/, orderBy)));
@@ -92,5 +89,9 @@ public class ViewerProfileService {
                 })
                 .map(Stream::of)
                 .orElse(Stream.empty());
+    }
+
+    public Stream<Story> findRecommends(SizToken token, String orderBy) {
+        return findRecommends(token, new ViewerProfile(), orderBy);
     }
 }

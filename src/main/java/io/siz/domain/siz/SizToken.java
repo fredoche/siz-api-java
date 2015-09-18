@@ -29,6 +29,9 @@ public class SizToken extends AbstractAuditingEntity implements Serializable, Us
     @Id
     private String id;
 
+    /**
+     * @deprecated TODO enlever la dépendance entre token et viewerprofile.
+     */
     private String viewerProfileId;
 
     @JsonIgnore

@@ -13,12 +13,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
- * Structure devant mapper { "_id" : ObjectId("553a39d820000016002f5ad8"),
- * "storyId" : "14298729093245d988982d6e", "tags" : [ "epic-win", "funny" ],
- * "viewerProfileId" : "553a14f1200000b8f52f5595", "date" :
+ * Structure devant mapper { "_id" : ObjectId("553a39d820000016002f5ad8"), "storyId" : "14298729093245d988982d6e",
+ * "tags" : [ "epic-win", "funny" ], "viewerProfileId" : "553a14f1200000b8f52f5595", "date" :
  * 1429879256186.0000000000000000, "type" : "nope" }
  *
  * @author fred
@@ -37,14 +35,17 @@ public class Event extends AbstractAuditingEntity implements Serializable {
     private String storyId;
     private List<String> tags;
     /**
-     * An event of a non-registered user is associated to an abstract
-     * viewerprofile, which is a document-id without any actual document in the
-     * viewerprofile collection.
+     * An event of a non-registered user is associated to an abstract viewerprofile, which is a document-id without any
+     * actual document in the viewerprofile collection.
      */
-    @Field("viewerProfileId")
+//    @Field("viewerProfileId")
     @JsonIgnore
     private String viewerProfileId;
 
+    /**
+     * date de création (idem ancienne api). Par défaut jackson serialize vers un Number ce qui est bien, mais on
+     * pourrait changer ça avec @JsonDeserialize(using = CustomJsonDateDeserializer.class)
+     */
     private Date date = DateTime.now().toDate();
 
     private EventType type;

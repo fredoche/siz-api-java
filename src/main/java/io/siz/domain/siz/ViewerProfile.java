@@ -3,6 +3,8 @@ package io.siz.domain.siz;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.siz.domain.AbstractAuditingEntity;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.Data;
@@ -30,11 +32,11 @@ public class ViewerProfile extends AbstractAuditingEntity implements Serializabl
     private String id;
 
     @Field(value = "likeStoryIds")
-    private List<String> likedStories;
+    private List<String> likedStories = new ArrayList<>();
 
     @Field(value = "nopeStoryIds")
-    private List<String> nopeStoryIds;
+    private List<String> nopeStoryIds = new ArrayList<>();
 
-    private Map<String, Integer> tagsWeights;
+    private Map<String, Integer> tagsWeights = new HashMap<>();
 
 }

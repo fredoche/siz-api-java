@@ -63,7 +63,7 @@ public class TokenEndpoint {
     /**
      * cette clause spécifie que le token n'est pas déja associé à un user.
      */
-    @PreAuthorize("principal.userId == null")
+//    @PreAuthorize("principal.userId == null")
     public TopLevelDto login(@PathVariable String unusedString, @RequestBody SizUserWrapperDTO wrapper) {
         Locale locale = LocaleContextHolder.getLocale();
         return wrapper.getUsers().stream()

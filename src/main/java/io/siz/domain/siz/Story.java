@@ -1,6 +1,5 @@
 package io.siz.domain.siz;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.siz.domain.AbstractAuditingEntity;
 import io.siz.domain.siz.story.Box;
@@ -12,6 +11,7 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -24,7 +24,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Story extends AbstractAuditingEntity implements Serializable {
 
     @Id
-    @JsonIgnore
     private String id;
     private Source source;
     private List<Box> boxes;
@@ -34,4 +33,9 @@ public class Story extends AbstractAuditingEntity implements Serializable {
     private String slug;
     private List<String> tags;
     private String privacy;
+
+    @Transient
+    public String getHref() {
+        return "/stories/" + id;
+    }
 }

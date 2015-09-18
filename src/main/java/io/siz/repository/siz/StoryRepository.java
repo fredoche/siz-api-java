@@ -13,13 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Spring Data MongoDB repository for the Story entity.
- * TODO mettre les annotations de cache.
+ * Spring Data MongoDB repository for the Story entity. TODO mettre les
+ * annotations de cache.
  */
 public interface StoryRepository extends SecureMongoRepository<Story, String> {
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Stream<Story> findAll(Sort sort, Pageable pageable);
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -56,14 +53,15 @@ public interface StoryRepository extends SecureMongoRepository<Story, String> {
     public Optional<Story> getBySlug(String slug);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Stream<Story> findAllIn(List<String> ids, Page page, Sort sort);
+    public Stream<Story> findByIdIn(List<String> ids, Page page, Sort sort);
 
     /**
      * http://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongodb.repositories.queries
+     *
      * @param alreadySeenStories
      * @param dislikedTags
-     * @return 
+     * @return
      */
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Stream<Story> findAllWhereIdNotInAndTagsContainingNot(List<String> alreadySeenStories, List<String> dislikedTags, Sort sort);
+    public Stream<Story> findByIdNotInAndTagsNotIn(List<String> alreadySeenStories, List<String> dislikedTags, Sort sort);
 }

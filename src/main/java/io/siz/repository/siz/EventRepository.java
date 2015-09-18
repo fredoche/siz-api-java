@@ -2,25 +2,23 @@ package io.siz.repository.siz;
 
 import io.siz.domain.siz.Event;
 import io.siz.domain.siz.EventType;
-import io.siz.repository.secure.SecureMongoRepository;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  *
  * @author fred
  */
-public interface EventRepository extends SecureMongoRepository<Event, String> {
+@RepositoryRestResource(exported = false)
+public interface EventRepository extends MongoRepository<Event, String> {
 
     @Override
-    @PreAuthorize("hasRole('ROLE_USER')")
     public <S extends Event> S insert(S entity);
 
     @Override
-    @PreAuthorize("hasRole('ROLE_USER')")
     public <S extends Event> List<S> insert(Iterable<S> entities);
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Optional<Event> findByIpAndEventType(String remoteAddr, EventType type);
+    public Optional<Event> findByIpAndType(String remoteAddr, EventType type);
 }

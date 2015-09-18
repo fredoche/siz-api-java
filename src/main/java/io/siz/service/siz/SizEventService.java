@@ -3,6 +3,8 @@ package io.siz.service.siz;
 import com.mongodb.WriteResult;
 import io.siz.domain.siz.Event;
 import io.siz.domain.siz.Story;
+import io.siz.domain.siz.ViewerProfile;
+import io.siz.exception.SizException;
 import io.siz.repository.siz.EventRepository;
 import io.siz.repository.siz.ViewerProfileRepository;
 import io.siz.security.SecurityUtils;
@@ -36,19 +38,19 @@ public class SizEventService {
          * et qu'il faut lui créer un nouveau viewerprofile. L'id du
          * viewerprofile est égal à celui du token.
          */
-        event.setViewerProfileId(SecurityUtils.getCurrentLogin());
+        final ViewerProfile vp = viewerProfileRepository.findById(event.getViewerProfileId())
+                .orElseGet(() -> {
+                    ViewerProfile newProfile = new ViewerProfile();
+                    newProfile.setId(event.getViewerProfileId());
+                    return viewerProfileRepository.insert(newProfile);
+                });
+
+        event.setViewerProfileId(vp.getId());
+
         WriteResult updateFromEvent = viewerProfileRepository.updateFromEvent(event);
         if (updateFromEvent.getN() != 1) {
-            return eventRepository.insert(event);
-        } else {
-            /**
-             * sinon c'est bon on retourne juste l'event.
-             */
-            return event;
-//            log.error(
-//                    "wrong number of udpated profiles: Updated {} for viewerprofile id {}",
-//                    updateFromEvent.getN(),
-//                    event.getViewerProfile().getId());
+            throw new SizException("unable to update profile");
         }
+        return eventRepository.insert(event);
     }
 }
