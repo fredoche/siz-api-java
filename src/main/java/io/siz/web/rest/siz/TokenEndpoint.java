@@ -69,7 +69,7 @@ public class TokenEndpoint {
                 .map(user -> {
                     TopLevelDto dto = new TopLevelDto();
                     dto.setUser(user);
-                    dto.setToken((SizToken) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+                    dto.setToken(sizTokenService.getCurrentToken());
                     return dto;
                 }
                 )

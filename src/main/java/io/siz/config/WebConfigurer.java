@@ -23,9 +23,15 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
@@ -57,10 +63,22 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
         log.info("Web application fully configured");
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new HandlerInterceptorAdapter() {
+
+            @Override
+            public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+                log.info("URL Requested: {}", request.getRequestURI());
+                return true;
+            }
+        });
+    }
+
     /**
-     * Si le client http spécifie pas content type, on imagine que par défaut
-     * c'est du json qui est demandé, dans le doute.
-     * cf https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc
+     * Si le client http spécifie pas content type, on imagine que par défaut c'est du json qui est demandé, dans le
+     * doute. cf https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc
+     *
      * @param configurer
      */
     @Override

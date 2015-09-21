@@ -12,6 +12,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -29,10 +31,13 @@ public class Story extends AbstractAuditingEntity implements Serializable {
     private List<Box> boxes;
     private Picture picture;
     private String title;
+    @Indexed(direction = IndexDirection.DESCENDING)
     private Date creationDate;
+    @Indexed(name = "slugUniqueIndex")
     private String slug;
     private List<String> tags;
     private String privacy;
+    private Loop loop;
 
     @Transient
     public String getHref() {

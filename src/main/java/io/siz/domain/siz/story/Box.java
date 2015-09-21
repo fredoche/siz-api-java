@@ -1,6 +1,7 @@
 package io.siz.domain.siz.story;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.siz.domain.siz.VideoFormat;
 import java.util.List;
 import lombok.Data;
 
@@ -12,6 +13,6 @@ public class Box {
     private Integer height;
     private Integer start;
     private Integer stop;
-    private List<Format> formats;
+    private List<VideoFormat> formats;
 
 }

@@ -1,14 +1,17 @@
-package io.siz.domain.siz.story;
+package io.siz.domain.siz;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.siz.domain.siz.story.AddHttpToHrefConverter;
 import lombok.Data;
 
+/**
+ *
+ * @author fred
+ */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Picture {
+public class VideoFormat {
 
+    private String type;
     @JsonSerialize(converter = AddHttpToHrefConverter.class)
     private String href;
-
 }

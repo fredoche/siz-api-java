@@ -66,9 +66,10 @@ public class ViewerProfileService {
                  * recommandée par ip:
                  */
                 getPushedStories(token),
-                storyRepository.findByIdNotInAndTagsNotIn(
+                storyRepository.findByIdNotInAndTagsNotInAndPrivacy(
                         alreadySeenStories,
                         dislikedTags,
+                        "Public",
                         new Sort(Sort.Direction.DESC/* correspong à mongo -1 dans l'ancienne api*/, orderBy)));
     }
 

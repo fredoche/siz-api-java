@@ -13,8 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Spring Data MongoDB repository for the Story entity. TODO mettre les
- * annotations de cache.
+ * Spring Data MongoDB repository for the Story entity. TODO mettre les annotations de cache.
  */
 public interface StoryRepository extends SecureMongoRepository<Story, String> {
 
@@ -60,8 +59,14 @@ public interface StoryRepository extends SecureMongoRepository<Story, String> {
      *
      * @param alreadySeenStories
      * @param dislikedTags
+     * @param privacy
+     * @param sort
      * @return
      */
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Stream<Story> findByIdNotInAndTagsNotIn(List<String> alreadySeenStories, List<String> dislikedTags, Sort sort);
+    public Stream<Story> findByIdNotInAndTagsNotInAndPrivacy(
+            List<String> alreadySeenStories,
+            List<String> dislikedTags,
+            String privacy,
+            Sort sort);
 }
