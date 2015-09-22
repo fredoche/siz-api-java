@@ -6,7 +6,6 @@ import io.siz.domain.siz.Story;
 import io.siz.repository.siz.EventRepository;
 import io.siz.repository.siz.StoryRepository;
 import java.util.Optional;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;

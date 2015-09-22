@@ -34,6 +34,9 @@ public class SizToken extends AbstractAuditingEntity implements Serializable, Us
      */
     private String viewerProfileId;
 
+    /**
+     * @deprecated TODO Est toujours égal à viewerProfileId, et inverse la dépendance de manière incohérente.
+     */
     @JsonIgnore
     private String userId;
 

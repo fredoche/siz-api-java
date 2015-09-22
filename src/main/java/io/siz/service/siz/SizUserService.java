@@ -49,6 +49,11 @@ public class SizUserService {
         } else {
             log.info("Creating user");
             SizUser user = new SizUser();
+            /**
+             * L'user peut commencer à faire son choix de video préférées, associées à son userprofile. La convention
+             * est que le user_id est égal au viewerprofile_id.
+             */
+            user.setId(token.getViewerProfileId());
 
             userDTO.getUsername().ifPresent(user::setUsername);
             userDTO.getPassword().map(passwordEncoder::encode).ifPresent(user::setPasswordHash);
@@ -73,10 +78,21 @@ public class SizUserService {
                     );
 
             SizUser insertedUser = sizUserRepository.insert(user);
-            token.setUserId(insertedUser.getId());
-            sizTokenRepository.save(token);
+
+            bindTokenToUser(token, insertedUser);
+
             return user;
         }
+    }
+
+    /**
+     * on accroche le user Id à ce token une fois pour toutes. Chaque token doit se ballader avec des infos relatives au
+     * user loggé.
+     */
+    private void bindTokenToUser(SizToken token, SizUser insertedUser) {
+        token.setUserId(insertedUser.getId());
+        token.setViewerProfileId(insertedUser.getId());
+        sizTokenRepository.save(token);
     }
 
     private User getUserProfile(String facebookToken) {
@@ -120,12 +136,10 @@ public class SizUserService {
         }
 
         return oUser.map(user -> {
-            SizToken token = (SizToken) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            /**
-             * on accroche le user Id à ce token une fois pour toutes.
-             */
-            token.setUserId(user.getId());
-            sizTokenRepository.save(token);
+            SizToken token = sizTokenService.getCurrentToken();
+
+            bindTokenToUser(token, user);
+
             return user;
         });
     }

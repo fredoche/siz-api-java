@@ -27,6 +27,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 public class SizUser extends AbstractAuditingEntity implements Serializable {
 
+    /**
+     * égal et positionné au viewerprofile id.
+     */
     @Id
     private String id;
 
