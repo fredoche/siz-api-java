@@ -16,10 +16,14 @@ import io.siz.web.rest.dto.siz.TopLevelDto;
 import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
@@ -80,5 +84,12 @@ public class TokenEndpoint {
                                                 new Object[]{unusedString},
                                                 "invalid login",
                                                 locale))));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public TopLevelDto processAccessDeniedException(AccessDeniedException ex) {
+        return new TopLevelDto(new SizErrorDTO(null, ex.getMessage(), null));
     }
 }

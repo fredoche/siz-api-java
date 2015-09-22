@@ -1,4 +1,4 @@
-package io.siz.domain.siz;
+package io.siz.domain.siz.story;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.siz.domain.siz.story.AddHttpToHrefConverter;

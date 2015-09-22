@@ -1,5 +1,6 @@
-package io.siz.domain.siz;
+package io.siz.domain.siz.story;
 
+import io.siz.domain.siz.story.VideoFormat;
 import java.util.List;
 import lombok.Data;
 

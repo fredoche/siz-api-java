@@ -8,13 +8,13 @@ import io.siz.repository.siz.SizUserRepository;
 import io.siz.web.rest.dto.siz.SizUserDTO;
 import java.util.Date;
 import java.util.Optional;
-import java.util.function.Supplier;
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.facebook.api.User;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 import static org.springframework.util.StringUtils.*;
@@ -47,38 +47,40 @@ public class SizUserService {
             log.error(m);
             throw new SizException(m);
         } else {
+            log.info("Creating user");
             SizUser user = new SizUser();
 
-            user.setUsername(userDTO.getUsername());
-            user.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
-            user.setFacebookToken(userDTO.getFacebookToken());
+            userDTO.getUsername().ifPresent(user::setUsername);
+            userDTO.getPassword().map(passwordEncoder::encode).ifPresent(user::setPasswordHash);
             user.setCreationDate(new Date());
             // create by email
-            user.setEmail(userDTO.getEmail());
+            userDTO.getEmail().ifPresent(user::setEmail);
+
             // create by facebook
-            if (hasLength(userDTO.getFacebookToken())) {
-                FacebookTemplate template = new FacebookTemplate(userDTO.getFacebookToken());
-                /**
-                 * on teste la verif de l'email.
-                 */
-                user.setEmail(template.userOperations().getUserProfile().getEmail());
-                /**
-                 * mais on veut surtout garder son facebookUserId.
-                 */
-                user.setFacebookUserId(user.getFacebookUserId());
-            }
+            userDTO.getFacebookToken()
+                    .map(this::getUserProfile)
+                    .ifPresent(userProfile -> {
+                        log.info("Creating user by facebook");
+                        /**
+                         * on teste la verif de l'email.
+                         */
+                        user.setEmail(userProfile.getEmail());
+                        /**
+                         * mais on veut surtout garder son facebookUserId.
+                         */
+                        user.setFacebookUserId(userProfile.getId());
+                    }
+                    );
 
-            try {
-                user = sizUserRepository.insert(user);
-                token.setUserId(user.getId());
-                sizTokenRepository.save(token);
-                return user;
-
-            } catch (Exception e) {
-                log.error("exception caught : {}", e.getMessage());
-                throw e;
-            }
+            SizUser insertedUser = sizUserRepository.insert(user);
+            token.setUserId(insertedUser.getId());
+            sizTokenRepository.save(token);
+            return user;
         }
+    }
+
+    private User getUserProfile(String facebookToken) {
+        return new FacebookTemplate(facebookToken).userOperations().getUserProfile();
     }
 
     /**
@@ -97,27 +99,34 @@ public class SizUserService {
 
     public Optional<SizUser> loginUser(SizUserDTO dto) {
 
-        Supplier<Optional<SizUser>> r;
-        if (!isEmpty(dto.getEmail()) && !isEmpty(dto.getPassword())) {
-            r = () -> sizUserRepository.findByEmail(dto.getEmail());
-        } else if (!isEmpty(dto.getUsername()) && !isEmpty(dto.getPassword())) {
-            r = () -> sizUserRepository.findByUsername(dto.getUsername());
-        } else if (!isEmpty(dto.getFacebookToken())) {
-            r = () -> sizUserRepository.findByFacebookUserId(dto.getFacebookToken());
+        Optional<SizUser> oUser;
+        if (dto.getEmail().isPresent() && dto.getPassword().isPresent()) {
+            oUser = dto.getEmail()
+                    .flatMap(sizUserRepository::findByEmail)
+                    .filter(user -> passwordEncoder.matches(dto.getPassword().get(), user.getPasswordHash()));
+
+        } else if (dto.getUsername().isPresent() && dto.getPassword().isPresent()) {
+            oUser = dto.getUsername()
+                    .flatMap(sizUserRepository::findByUsername)
+                    .filter(user -> passwordEncoder.matches(dto.getPassword().get(), user.getPasswordHash()));
+
+        } else if (dto.getFacebookToken().isPresent()) {
+            oUser = dto.getFacebookToken()
+                    .map(this::getUserProfile)
+                    .map(User::getId)
+                    .flatMap(sizUserRepository::findByFacebookUserId);
         } else {
-            throw new SizException();
+            throw new SizException("provide a valid login tuple.");
         }
 
-        return r.get()
-                .filter(user -> passwordEncoder.matches(dto.getPassword(), user.getPasswordHash()))
-                .map(user -> {
-                    SizToken token = (SizToken) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                    /**
-                     * on accroche le user Id à ce token une fois pour toutes.
-                     */
-                    token.setUserId(user.getId());
-                    sizTokenRepository.save(token);
-                    return user;
-                });
+        return oUser.map(user -> {
+            SizToken token = (SizToken) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            /**
+             * on accroche le user Id à ce token une fois pour toutes.
+             */
+            token.setUserId(user.getId());
+            sizTokenRepository.save(token);
+            return user;
+        });
     }
 }

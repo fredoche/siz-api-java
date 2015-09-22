@@ -1,7 +1,6 @@
 package io.siz.domain.siz.story;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.siz.domain.siz.VideoFormat;
 import java.util.List;
 import lombok.Data;
 

@@ -1,5 +1,6 @@
 package io.siz.domain.siz;
 
+import io.siz.domain.siz.story.Loop;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.siz.domain.AbstractAuditingEntity;
 import io.siz.domain.siz.story.Box;

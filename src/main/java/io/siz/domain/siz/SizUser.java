@@ -47,9 +47,6 @@ public class SizUser extends AbstractAuditingEntity implements Serializable {
     private String passwordHash;
 
     @JsonIgnore
-    private String facebookToken;
-
-    @JsonIgnore
     @Indexed(unique = true, sparse = true)
     private String facebookUserId;
 
