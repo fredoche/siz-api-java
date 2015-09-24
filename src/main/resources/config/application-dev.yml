@@ -9,8 +9,7 @@ spring:
         active: dev
     data:
         mongodb:
-            host: localhost
-            port: 27017
+            uri: mongodb://localhost:27017
     messages:
         cache-seconds: 1
     thymeleaf:
