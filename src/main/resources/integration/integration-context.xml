@@ -18,7 +18,7 @@
     <int-http:outbound-channel-adapter  
         
         channel="jsonVideoStripChannel"
-        url="http://localhost:5000/"
+        url="http://videostripcreator:5000/"
         http-method="POST"
         
     />

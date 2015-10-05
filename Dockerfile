@@ -2,9 +2,10 @@ FROM quay.io/sizio/maven-spring-boot-base
 
 MAINTAINER SIZ IO
 
-RUN mkdir target
+COPY pom.xml pom.xml
+COPY src src
 
-COPY target/api-0.0.1-SNAPSHOT.war target/api-0.0.1-SNAPSHOT.war
+RUN mvn clean install spring-boot:repackage -Dmaven.test.skip
 
 CMD java -jar target/api-0.0.1-SNAPSHOT.war --spring.profiles.active=dev,fixtures 
 
