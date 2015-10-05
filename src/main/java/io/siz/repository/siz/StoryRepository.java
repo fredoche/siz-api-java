@@ -7,6 +7,7 @@ import java.util.List;
 
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,18 +16,23 @@ import org.springframework.security.access.prepost.PreAuthorize;
 /**
  * Spring Data MongoDB repository for the Story entity. TODO mettre les annotations de cache.
  */
-public interface StoryRepository extends SecureMongoRepository<Story, String> {
+public interface StoryRepository extends SecureMongoRepository<Story, ObjectId> {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Story findOne(String id);
+    public Story findOne(ObjectId id);
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    default public Story findOne(String id) {
+        return findOne(new ObjectId(id));
+    }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     public Optional<Story> findBySlug(String slug);
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Iterable<Story> findAll(Iterable<String> ids);
+    public Iterable<Story> findAll(Iterable<ObjectId> ids);
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")

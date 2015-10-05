@@ -1,0 +1,7 @@
+<mongoChangeLog>
+    <changeSet changeId="ChangeSet-1" author="jhipster">
+        <script>
+            db.counters.insert({"_id" : "slug", seq: 0});
+        </script>
+    </changeSet>
+</mongoChangeLog>

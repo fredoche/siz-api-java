@@ -16,15 +16,14 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
+ * Modèle servant uniquement à se logger. Tout le reste est associé au siztoken.
+ *
  * @author fred
  */
 @Document(collection = "users")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-/**
- * Modèle servant uniquement à se logger. Tout le reste est associé au siztoken.
- */
 public class SizUser extends AbstractAuditingEntity implements Serializable {
 
     /**

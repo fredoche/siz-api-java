@@ -42,7 +42,7 @@ public class ViewerProfileRepositoryImpl implements ViewerProfileRepositoryCusto
         )
       )
          */
-        final String storyId = e.getStoryId();
+        final String storyId = e.getStoryId().toString();
 
         final Query query = new Query(
                 where("id").is(e.getViewerProfileId())

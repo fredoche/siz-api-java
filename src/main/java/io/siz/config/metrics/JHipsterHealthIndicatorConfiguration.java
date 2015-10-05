@@ -7,14 +7,14 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import javax.inject.Inject;
 
-@Configuration
+//@Configuration
 public class JHipsterHealthIndicatorConfiguration {
 
-    @Inject
-    private JavaMailSenderImpl javaMailSender;
-
-    @Bean
-    public HealthIndicator mailHealthIndicator() {
-        return new JavaMailHealthIndicator(javaMailSender);
-    }
+//    @Inject
+//    private JavaMailSenderImpl javaMailSender;
+//
+//    @Bean
+//    public HealthIndicator mailHealthIndicator() {
+//        return new JavaMailHealthIndicator(javaMailSender);
+//    }
 }

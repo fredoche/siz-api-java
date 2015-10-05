@@ -33,7 +33,7 @@ public class MailService {
     @Inject
     private Environment env;
 
-    @Inject
+//    @Inject
     private JavaMailSenderImpl javaMailSender;
 
     @Inject

@@ -1,5 +1,10 @@
 # Disable the spring security default configuration from spring-boot-actuator
-management.security.enabled: true
+management:
+    health:
+        mail:
+            enabled: false
+    security:
+        enabled: true
 security.basic.enabled: false
 
 # Disable Jolokia - An http/json bridge for remote JMX access

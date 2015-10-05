@@ -168,7 +168,7 @@ public class StoryEndpoint {
             method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_USER')")
     public StoryOutWrapperDTO createStory(@RequestBody StoryInWrapperDTO wrapper) {
-        return wrapper.getStories().stream()
+        Story s = wrapper.getStories().stream()
                 .map(storyDto -> {
                     final Story story = new Story();
                     story.setSource(storyDto.getSource());
@@ -187,9 +187,10 @@ public class StoryEndpoint {
                     story.setBoxes(boxes);
                     return story;
                 })
-                .map(s -> storyRepository.insert(s))
                 .findFirst()
-                .map(StoryOutWrapperDTO::new)
                 .orElseThrow(SizException::new);
+
+        storyService.startConversion(s);
+        return new StoryOutWrapperDTO(s);
     }
 }

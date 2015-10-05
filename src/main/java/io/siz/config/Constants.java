@@ -13,6 +13,11 @@ public final class Constants {
 
     public static final String SYSTEM_ACCOUNT = "system";
 
+    /**
+     * profile indiquant que l'on veut se servir de sqs
+     */
+    public final static String SQS = "sqs";
+
     private Constants() {
     }
 }
