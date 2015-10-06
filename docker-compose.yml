@@ -17,10 +17,18 @@ api:
 videostripcreator:
   image: videostrip
   environment:
-        MONGO_URI: mongodb://mongo:27017/siz
+    MONGO_URI: mongodb://mongo:27017/siz
   ports:
    - "5000:5000"
   links:
    - mongo
   command: ./videostrip-service.py
-
+sizwebapp:
+  image: sizwebapp
+  environment:
+      API_ENDPOINT: http://api:8080
+  ports:
+   - "1515:1515"
+  links:
+   - api
+ 
