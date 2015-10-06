@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.siz.domain.siz.Story;
 import io.siz.service.messaging.SqsQueueSender;
 import javax.inject.Inject;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -25,18 +26,13 @@ import org.springframework.integration.config.EnablePublisher;
 @EnablePublisher("defaultPublisherChannel")
 public class SqsIntegrationConfiguration {
 
+    @Inject
     private SqsQueueSender sender;
 
     @Inject
     private ObjectMapper objectMapper;
 
-    @Bean
-    public SqsQueueSender sender(AmazonSQS amazonSQS) {
-        this.sender = new SqsQueueSender(amazonSQS);
-        return sender;
-    }
-
-    @ServiceActivator(inputChannel = "videostripCreator")
+    @ServiceActivator(inputChannel = "videostripChannel")
     public void sendToSqs(Story story) throws JsonProcessingException {
         sender.send(objectMapper.writeValueAsString(story));
     }
