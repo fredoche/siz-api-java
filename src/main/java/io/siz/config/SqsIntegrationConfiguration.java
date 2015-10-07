@@ -1,13 +1,10 @@
 package io.siz.config;
 
-import com.amazonaws.services.sqs.AmazonSQS;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.siz.domain.siz.Story;
 import io.siz.service.messaging.SqsQueueSender;
 import javax.inject.Inject;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.integration.annotation.MessageEndpoint;
