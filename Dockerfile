@@ -10,4 +10,5 @@ RUN mvn clean install spring-boot:repackage -Dmaven.test.skip
 CMD java -jar target/api-0.0.1-SNAPSHOT.war
 
 EXPOSE 8080
+EXPOSE 9000
 EXPOSE 5005
