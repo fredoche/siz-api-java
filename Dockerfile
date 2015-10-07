@@ -7,7 +7,7 @@ COPY src src
 
 RUN mvn clean install spring-boot:repackage -Dmaven.test.skip
 
-CMD java -jar target/api-0.0.1-SNAPSHOT.war --spring.profiles.active=dev,fixtures 
+CMD java -jar target/api-0.0.1-SNAPSHOT.war
 
 EXPOSE 8080
 EXPOSE 5005
