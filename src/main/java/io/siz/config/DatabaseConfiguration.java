@@ -79,7 +79,7 @@ public class DatabaseConfiguration extends AbstractMongoConfiguration {
     @Bean
     @Profile({"!" + SPRING_PROFILE_FAST, SPRING_PROFILE_MIGRATION})
     public Mongeez mongeez() {
-        log.debug("Configuring Mongeez for migrations");
+        log.debug("Configuring Mongeez for migrations because profile is activated");
         Mongeez mongeez = new Mongeez();
         mongeez.setFile(new ClassPathResource("/config/mongeez/master.xml"));
         mongeez.setMongo(mongo);
