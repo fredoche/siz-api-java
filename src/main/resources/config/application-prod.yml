@@ -13,6 +13,11 @@ spring:
     thymeleaf:
         mode: XHTML
         cache: true
+        
+cloud:
+  aws:
+    stack:
+      auto: false        
 
 metrics:
     jmx.enabled: true

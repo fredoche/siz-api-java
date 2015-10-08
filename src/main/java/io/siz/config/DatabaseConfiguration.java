@@ -22,6 +22,8 @@ import javax.inject.Inject;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.core.convert.CustomConversions;
 
+import static io.siz.config.Constants.*;
+
 @Configuration
 @EnableMongoRepositories("io.siz.repository")
 @Import(value = MongoAutoConfiguration.class)
@@ -60,9 +62,8 @@ public class DatabaseConfiguration extends AbstractMongoConfiguration {
     public CustomConversions customConversions() {
         return new CustomConversions(Arrays.asList(
                 /**
-                 * On a en base pas mal de champs de type mongo NumberLong qui
-                 * sont en fait des dates. On créé ici le convertisseur custom
-                 * qui va nous sauver.
+                 * On a en base pas mal de champs de type mongo NumberLong qui sont en fait des dates. On créé ici le
+                 * convertisseur custom qui va nous sauver.
                  */
                 new Converter<Long, Date>() {
 
@@ -76,7 +77,7 @@ public class DatabaseConfiguration extends AbstractMongoConfiguration {
     }
 
     @Bean
-    @Profile("!" + Constants.SPRING_PROFILE_FAST)
+    @Profile({"!" + SPRING_PROFILE_FAST, SPRING_PROFILE_MIGRATION})
     public Mongeez mongeez() {
         log.debug("Configuring Mongeez for migrations");
         Mongeez mongeez = new Mongeez();
@@ -88,7 +89,7 @@ public class DatabaseConfiguration extends AbstractMongoConfiguration {
     }
 
     @Bean
-    @Profile(Constants.SPRING_PROFILE_FIXTURES)
+    @Profile(SPRING_PROFILE_FIXTURES)
     public Mongeez mongeez_fixtures() {
         log.debug("Configuring Mongeez for fixtures");
         Mongeez mongeez = new Mongeez();
