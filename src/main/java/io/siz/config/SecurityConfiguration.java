@@ -93,6 +93,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                  * only anonymous users are able to create tokens.
                  */
                 .antMatchers("/tokens").permitAll()
+                .antMatchers("/health").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/activate").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
